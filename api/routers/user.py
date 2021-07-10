@@ -3,7 +3,7 @@ from .. import crud
 from ..auth2 import get_current_user
 from ..schemas import user as schemas
 
-router = APIRouter(tags=['Users'], prefix='/user')
+router = APIRouter(tags=['Users'], prefix='/user', dependencies=[Depends(get_current_user)])
 
 
 @router.post('/', response_model=schemas.User)
