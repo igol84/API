@@ -1,1 +1,1 @@
-from . import blog, user
+from . import product, user

@@ -2,6 +2,7 @@ from typing import Generic, TypeVar
 
 from fastapi import Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
@@ -16,6 +17,7 @@ UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     table = None
+    search_columns = []
 
     def __init__(self, db: Session = Depends(database.get_db)):
         self.db = db
@@ -38,9 +40,22 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def get(self, base_id: int) -> ModelType:
         return self._get(base_id).first()
 
-    def get_all(self) -> list[ModelType]:
-        db_obj = self.db.query(self.table).all()
-        return db_obj
+    def get_all(self, skip: int = 0, limit: int = None, q_search: str = None) -> list[ModelType]:
+        if limit:
+            if skip:
+                SLICE = slice(skip, skip + limit)
+            else:
+                SLICE = slice(skip, limit)
+        else:
+            SLICE = slice(skip, None)
+        db_obj = self.db.query(self.table)
+
+        if self.search_columns and q_search:
+            search = []
+            for column in self.search_columns:
+                search.append(getattr(self.table, column).ilike(f'%{q_search}%'))
+            db_obj = db_obj.filter(or_(*search))
+        return db_obj[SLICE]
 
     def update(self, base_id: int, request: UpdateSchemaType) -> ModelType:
         db_obj = self._get(base_id)

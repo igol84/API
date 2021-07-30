@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pydantic import BaseModel
-from .blog import ShowBlog
+from .product import Product
 
 
 class BaseUser(BaseModel):
@@ -29,10 +29,6 @@ class ShowUser(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-class UserWithBlogs(ShowUser):
-    blogs: list[ShowBlog]
 
 
 class Login(BaseModel):
