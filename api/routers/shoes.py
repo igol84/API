@@ -5,7 +5,7 @@ from .. schemas import shoes as schemas
 from ..auth2 import get_current_user
 
 
-router = APIRouter(tags=['Shoes'], prefix='/shoes')#, dependencies=[Depends(get_current_user)]
+router = APIRouter(tags=['Shoes'], prefix='/shoes', dependencies=[Depends(get_current_user)])#
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Shoes)
