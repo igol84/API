@@ -19,3 +19,13 @@ class Product(Base):
     type = Column(String)
     name = Column(String)
     price = Column(Float)
+
+
+class Shoes(Base):
+    __tablename__ = "shoes"
+
+    id = Column(Integer, primary_key=True, index=True, unique=True)
+    color = Column(String)
+    size = Column(Float)
+    length = Column(Float)
+    width = Column(String)

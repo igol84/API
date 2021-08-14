@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, status, Response
 
 from .. import crud
-from .. schemas import product as schemas
+from ..schemas import product as schemas
 from ..auth2 import get_current_user
 
-router = APIRouter(tags=['Products'], prefix='/prod', dependencies=[Depends(get_current_user)])
+router = APIRouter(tags=['Products'], prefix='/prod', dependencies=[Depends(get_current_user)])  #
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Product)
@@ -28,6 +28,10 @@ def update(prod_id: int, request: schemas.BaseProduct, crud_prod: crud.Product =
 
 
 @router.delete('/{prod_id}')
-def delete(prod_id: int, crud_prod: crud.Product = Depends()):
+def delete(prod_id: int, crud_prod: crud.Product = Depends(), crud_shoes: crud.Shoes = Depends()):
+    product: schemas.Product = crud_prod.get(prod_id)
+    if product.type == 'shoes':
+        if crud_shoes.is_id_exist(prod_id):
+            crud_shoes.delete(prod_id)
     crud_prod.delete(prod_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

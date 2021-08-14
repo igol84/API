@@ -30,6 +30,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.db.refresh(db_obj)
         return db_obj
 
+    def is_id_exist(self, base_id: int):
+        return self.db.query(self.table).filter(self.table.id == base_id).first()
+
     def _get(self, base_id: int):
         db_obj = self.db.query(self.table).filter(self.table.id == base_id)
         if not db_obj.first():
