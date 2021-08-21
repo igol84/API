@@ -29,3 +29,14 @@ class Shoes(Base):
     size = Column(Float)
     length = Column(Float)
     width = Column(String)
+
+
+class Item(Base):
+    __tablename__ = "items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    store_id = Column(Integer)
+    prod_id = Column(Integer, ForeignKey('products.id'))
+    qty = Column(Integer)
+    buy_price = Column(Float)
+    product = relationship('Product', backref='item')
