@@ -1,4 +1,8 @@
+from typing import Optional
+
 from pydantic import BaseModel
+
+from .shoes import Shoes
 
 
 class BaseProduct(BaseModel):
@@ -13,6 +17,7 @@ class CreateProduct(BaseProduct):
 
 class Product(BaseProduct):
     id: int
+    shoes: Optional[Shoes] = None
 
     class Config:
         orm_mode = True

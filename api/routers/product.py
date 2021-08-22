@@ -13,13 +13,22 @@ def create(request: schemas.CreateProduct, crud_prod: crud.Product = Depends()):
 
 
 @router.get('/', response_model=list[schemas.Product])
-def get_all(skip: int = None, limit: int = None, search: str = None, crud_blog: crud.Product = Depends()):
-    return crud_blog.get_all(skip, limit, search)
+def get_all(skip: int = None, limit: int = None, search: str = None, crud_blog: crud.Product = Depends(),
+            crud_shoes: crud.Shoes = Depends()):
+    products: list[schemas.Product] = crud_blog.get_all(skip, limit, search)
+    for product in products:
+        if product.type == 'shoes':
+            product.shoes = crud_shoes.get(product.id)
+    return products
 
 
 @router.get('/{prod_id}', status_code=200, response_model=schemas.Product)
-def show(prod_id: int, crud_prod: crud.Product = Depends()):
-    return crud_prod.get(prod_id)
+def show(prod_id: int, crud_prod: crud.Product = Depends(), crud_shoes: crud.Shoes = Depends()):
+    product = crud_prod.get(prod_id)
+    if product.type == 'shoes':
+        product.shoes = crud_shoes.get(prod_id)
+    return product
+
 
 
 @router.put('/{prod_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Product)
