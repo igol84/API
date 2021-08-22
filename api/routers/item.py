@@ -13,17 +13,27 @@ def create(request: schemas.CreateItem, crud_item: crud.Item = Depends()):
 
 
 @router.get('/', response_model=list[schemas.ShowItemWithProduct])
-def get_all(skip: int = None, limit: int = None, search: str = None, crud_item: crud.Item = Depends()):
-    return crud_item.get_all(skip, limit, search)
+def get_all(skip: int = None, limit: int = None, search: str = None, crud_item: crud.Item = Depends(),
+            crud_shoes: crud.Shoes = Depends()):
+    items: list[schemas.ShowItemWithProduct] = crud_item.get_all(skip, limit, search)
+    for item in items:
+        if item.product.type == 'shoes':
+            item.product.shoes = crud_shoes.get(item.product.id)
+    return items
 
 
 @router.get('/{item_id}', status_code=200, response_model=schemas.ShowItemWithProduct)
-def show(item_id: int, crud_item: crud.Item = Depends()):
-    return crud_item.get(item_id)
+def show(item_id: int, crud_item: crud.Item = Depends(), crud_shoes: crud.Shoes = Depends()):
+    item: schemas.ShowItemWithProduct = crud_item.get(item_id)
+    if item.product.type == 'shoes':
+        item.product.shoes = crud_shoes.get(item.prod_id)
+    return item
+
 
 @router.get('/by_prod_id/{prod_id}', status_code=200, response_model=list[schemas.Item])
 def get_all_by_user_id(prod_id: int, skip: int = None, limit: int = None, crud_item: crud.Item = Depends()):
     return crud_item.get_by_product_id(prod_id, skip, limit)
+
 
 @router.put('/{item_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Item)
 def update(item_id: int, request: schemas.BaseItem, crud_item: crud.Item = Depends()):
