@@ -39,4 +39,4 @@ class Item(Base):
     prod_id = Column(Integer, ForeignKey('products.id'))
     qty = Column(Integer)
     buy_price = Column(Float)
-    product = relationship('Product', backref='item')
+    product = relationship('Product', backref='items')

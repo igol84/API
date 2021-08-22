@@ -21,6 +21,9 @@ def get_all(skip: int = None, limit: int = None, search: str = None, crud_item: 
 def show(item_id: int, crud_item: crud.Item = Depends()):
     return crud_item.get(item_id)
 
+@router.get('/by_prod_id/{prod_id}', status_code=200, response_model=list[schemas.Item])
+def get_all_by_user_id(prod_id: int, skip: int = None, limit: int = None, crud_item: crud.Item = Depends()):
+    return crud_item.get_by_product_id(prod_id, skip, limit)
 
 @router.put('/{item_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Item)
 def update(item_id: int, request: schemas.BaseItem, crud_item: crud.Item = Depends()):
