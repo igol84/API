@@ -48,3 +48,11 @@ class Seller(Base):
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer)
     name = Column(String)
+
+
+class Place(Base):
+    __tablename__ = "places"
+
+    id = Column(Integer, primary_key=True, index=True)
+    store_id = Column(Integer)
+    name = Column(String)

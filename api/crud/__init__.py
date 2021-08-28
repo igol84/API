@@ -5,4 +5,5 @@ from .product import Product
 from .shoes import Shoes
 from .item import Item
 from .seller import Seller
+from .place import Place
 
