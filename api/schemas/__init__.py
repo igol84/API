@@ -1,1 +1,1 @@
-from . import product, user, shoes, item
+from . import product, user, shoes, item, seller

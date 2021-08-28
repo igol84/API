@@ -40,3 +40,11 @@ class Item(Base):
     qty = Column(Integer)
     buy_price = Column(Float)
     product = relationship('Product', backref='items')
+
+
+class Seller(Base):
+    __tablename__ = "sellers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    store_id = Column(Integer)
+    name = Column(String)
