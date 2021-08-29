@@ -6,4 +6,4 @@ from .shoes import Shoes
 from .item import Item
 from .seller import Seller
 from .place import Place
-
+from .sale_line_item import SaleLineItem

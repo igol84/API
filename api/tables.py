@@ -56,3 +56,13 @@ class Place(Base):
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer)
     name = Column(String)
+
+
+class SaleLineItem(Base):
+    __tablename__ = "sale_line_items"
+
+    sale_id = Column(Integer, primary_key=True, index=True)
+    item_id = Column(Integer, ForeignKey('items.id'), primary_key=True, index=True)
+    sale_price = Column(Float, primary_key=True, index=True)
+    qty = Column(Integer)
+    item = relationship('Item', backref='sale_line_items')

@@ -17,16 +17,14 @@ def get_all(skip: int = None, limit: int = None, search: str = None, crud_item: 
             crud_shoes: crud.Shoes = Depends()):
     items: list[schemas.ShowItemWithProduct] = crud_item.get_all(skip, limit, search)
     for item in items:
-        if item.product.type == 'shoes':
-            item.product.shoes = crud_shoes.get(item.product.id)
+        crud.product.set_product_details(item.product, crud_shoes)
     return items
 
 
 @router.get('/{item_id}', status_code=200, response_model=schemas.ShowItemWithProduct)
 def show(item_id: int, crud_item: crud.Item = Depends(), crud_shoes: crud.Shoes = Depends()):
     item: schemas.ShowItemWithProduct = crud_item.get(item_id)
-    if item.product.type == 'shoes':
-        item.product.shoes = crud_shoes.get(item.prod_id)
+    crud.product.set_product_details(item.product, crud_shoes)
     return item
 
 
