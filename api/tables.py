@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from datetime import datetime
+
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -11,6 +13,14 @@ class User(Base):
     email = Column(String)
     password = Column(String)
 
+class Sale(Base):
+    __tablename__ = "sales"
+
+    id = Column(Integer, primary_key=True, index=True)
+    store_id = Column(Integer)
+    seller_id = Column(Integer)
+    place_id = Column(Integer)
+    date_time = Column(DateTime, default=datetime.now)
 
 class Product(Base):
     __tablename__ = "products"
@@ -61,8 +71,10 @@ class Place(Base):
 class SaleLineItem(Base):
     __tablename__ = "sale_line_items"
 
-    sale_id = Column(Integer, primary_key=True, index=True)
+    sale_id = Column(Integer, ForeignKey('sales.id'), primary_key=True, index=True)
     item_id = Column(Integer, ForeignKey('items.id'), primary_key=True, index=True)
     sale_price = Column(Float, primary_key=True, index=True)
     qty = Column(Integer)
     item = relationship('Item', backref='sale_line_items')
+    sale = relationship('Sale', backref='sale_line_items')
+

@@ -1,7 +1,5 @@
 from typing import Generic, TypeVar
-
 from fastapi import Depends, HTTPException, status
-from fastapi.encoders import jsonable_encoder
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -23,8 +21,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.db = db
 
     def create(self, request: CreateSchemaType) -> ModelType:
-        obj_in_data = jsonable_encoder(request)
-        db_obj = self.table(**obj_in_data)
+        db_obj = self.table(**request.dict())
         self.db.add(db_obj)
         self.db.commit()
         self.db.refresh(db_obj)
