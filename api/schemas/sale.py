@@ -1,5 +1,9 @@
 from pydantic import BaseModel
 from datetime import datetime
+from .sale_line_item import ShowSaleLineItemWithItem
+from .seller import Seller
+from .place import Place
+
 
 class BaseSale(BaseModel):
     store_id: int
@@ -15,9 +19,11 @@ class CreateSale(BaseSale):
 class Sale(BaseSale):
     id: int
 
-
     class Config:
         orm_mode = True
 
-class ShowSaleWithProduct(Sale):
-    pass
+
+class ShowSaleWithSLIs(Sale):
+    sale_line_items: list[ShowSaleLineItemWithItem]
+    seller: Seller
+    place: Place

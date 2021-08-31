@@ -13,14 +13,19 @@ class User(Base):
     email = Column(String)
     password = Column(String)
 
+
 class Sale(Base):
     __tablename__ = "sales"
 
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer)
-    seller_id = Column(Integer)
-    place_id = Column(Integer)
+    seller_id = Column(Integer, ForeignKey('sellers.id'))
+    place_id = Column(Integer, ForeignKey('places.id'))
     date_time = Column(DateTime, default=datetime.now)
+    sale_line_items = relationship('SaleLineItem', back_populates='sale')
+    seller = relationship('Seller', backref='sales')
+    place = relationship('Place', backref='sales')
+
 
 class Product(Base):
     __tablename__ = "products"
@@ -76,5 +81,4 @@ class SaleLineItem(Base):
     sale_price = Column(Float, primary_key=True, index=True)
     qty = Column(Integer)
     item = relationship('Item', backref='sale_line_items')
-    sale = relationship('Sale', backref='sale_line_items')
-
+    sale = relationship('Sale', back_populates='sale_line_items')
