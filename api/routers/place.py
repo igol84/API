@@ -5,7 +5,7 @@ from .. schemas import place as schemas
 from ..auth2 import get_current_user
 
 
-router = APIRouter(tags=['Places'], prefix='/place', dependencies=[Depends(get_current_user)])#
+router = APIRouter(tags=['Places'], prefix='/place', dependencies=[Depends(get_current_user)])
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Place)

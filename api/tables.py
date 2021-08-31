@@ -34,12 +34,13 @@ class Product(Base):
     type = Column(String)
     name = Column(String)
     price = Column(Float)
+    shoes = relationship('Shoes', backref='product', uselist=False, cascade='all, delete')
 
 
 class Shoes(Base):
     __tablename__ = "shoes"
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, ForeignKey('products.id'), primary_key=True, index=True, unique=True)
     color = Column(String)
     size = Column(Float)
     length = Column(Float)

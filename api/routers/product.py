@@ -4,7 +4,7 @@ from .. import crud
 from ..schemas import product as schemas
 from ..auth2 import get_current_user
 
-router = APIRouter(tags=['Products'], prefix='/prod', dependencies=[Depends(get_current_user)])  #
+router = APIRouter(tags=['Products'], prefix='/prod', dependencies=[Depends(get_current_user)])
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Product)
@@ -13,17 +13,13 @@ def create(request: schemas.CreateProduct, crud_prod: crud.Product = Depends()):
 
 
 @router.get('/', response_model=list[schemas.Product])
-def get_all(skip: int = None, limit: int = None, search: str = None, crud_product: crud.Product = Depends(),
-            crud_shoes: crud.Shoes = Depends()):
-    products: list[schemas.Product] = crud_product.get_all(skip, limit, search)
-    for product in products:
-        crud.product.set_product_details(product, crud_shoes)
-    return products
+def get_all(skip: int = None, limit: int = None, search: str = None, crud_product: crud.Product = Depends()):
+    return crud_product.get_all(skip, limit, search)
 
 
 @router.get('/{prod_id}', status_code=200, response_model=schemas.Product)
-def show(prod_id: int, crud_prod: crud.Product = Depends(), crud_shoes: crud.Shoes = Depends()):
-    return crud.product.set_product_details(crud_prod.get(prod_id), crud_shoes)
+def show(prod_id: int, crud_prod: crud.Product = Depends()):
+    return crud_prod.get(prod_id)
 
 
 @router.put('/{prod_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Product)
