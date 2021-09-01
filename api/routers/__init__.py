@@ -9,6 +9,7 @@ from .seller import router as seller_router
 from .place import router as place_router
 from .sale_line_item import router as sale_line_item_router
 from .sale import router as sale_router
+from .store import router as store_router
 
 router = APIRouter()
 router.include_router(auth_router)
@@ -20,3 +21,4 @@ router.include_router(seller_router)
 router.include_router(place_router)
 router.include_router(sale_line_item_router)
 router.include_router(sale_router)
+router.include_router(store_router)

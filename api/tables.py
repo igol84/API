@@ -14,6 +14,14 @@ class User(Base):
     password = Column(String)
 
 
+class Store(Base):
+    __tablename__ = "stores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    desc = Column(String)
+
+
 class Sale(Base):
     __tablename__ = "sales"
 
