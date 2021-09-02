@@ -13,12 +13,12 @@ def create(request: schemas.CreateStore, crud_store: crud.Store = Depends()):
     return crud_store.create(request)
 
 
-@router.get('/', response_model=list[schemas.Store])
+@router.get('/', response_model=list[schemas.StoreWithDetails])
 def get_all(skip: int = None, limit: int = None, search: str = None, crud_store: crud.Store = Depends()):
     return crud_store.get_all(skip, limit, search)
 
 
-@router.get('/{store_id}', status_code=200, response_model=schemas.Store)
+@router.get('/{store_id}', status_code=200, response_model=schemas.StoreWithDetails)
 def show(store_id: int, crud_store: crud.Store = Depends()):
     return crud_store.get(store_id)
 

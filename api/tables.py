@@ -20,19 +20,24 @@ class Store(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     desc = Column(String)
+    sales = relationship('Sale', back_populates='store')
+    sellers = relationship('Seller', backref='store')
+    places = relationship('Place', backref='store')
+    items = relationship('Item', backref='store')
 
 
 class Sale(Base):
     __tablename__ = "sales"
 
     id = Column(Integer, primary_key=True, index=True)
-    store_id = Column(Integer)
+    store_id = Column(Integer, ForeignKey('stores.id'))
     seller_id = Column(Integer, ForeignKey('sellers.id'))
     place_id = Column(Integer, ForeignKey('places.id'))
     date_time = Column(DateTime, default=datetime.now)
-    sale_line_items = relationship('SaleLineItem', back_populates='sale')
+    store = relationship('Store', back_populates='sales')
     seller = relationship('Seller', backref='sales')
     place = relationship('Place', backref='sales')
+    sale_line_items = relationship('SaleLineItem', back_populates='sale')
 
 
 class Product(Base):
@@ -59,7 +64,7 @@ class Item(Base):
     __tablename__ = "items"
 
     id = Column(Integer, primary_key=True, index=True)
-    store_id = Column(Integer)
+    store_id = Column(Integer, ForeignKey('stores.id'))
     prod_id = Column(Integer, ForeignKey('products.id'))
     qty = Column(Integer)
     buy_price = Column(Float)
@@ -70,7 +75,7 @@ class Seller(Base):
     __tablename__ = "sellers"
 
     id = Column(Integer, primary_key=True, index=True)
-    store_id = Column(Integer)
+    store_id = Column(Integer, ForeignKey('stores.id'))
     name = Column(String)
 
 
@@ -78,7 +83,7 @@ class Place(Base):
     __tablename__ = "places"
 
     id = Column(Integer, primary_key=True, index=True)
-    store_id = Column(Integer)
+    store_id = Column(Integer, ForeignKey('stores.id'))
     name = Column(String)
 
 
