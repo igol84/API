@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, status, Response
 
 from .. import crud
 from .. schemas import place as schemas
-from ..auth2 import get_current_user
+from ..auth2 import RoleChecker
 
-
-router = APIRouter(tags=['Places'], prefix='/place', dependencies=[Depends(get_current_user)])
+allow_create_resource = RoleChecker(["admin"])
+router = APIRouter(tags=['Places'], prefix='/place', dependencies=[Depends(allow_create_resource)])
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Place)

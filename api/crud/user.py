@@ -9,7 +9,8 @@ from .base import CRUDBase
 class User(CRUDBase):
 
     def create_user(self, request: schemas.CreateUser) -> tables.User:
-        new_user = tables.User(name=request.name, email=request.email, password=Hash.bvcrypt(request.password))
+        request.password = Hash.bvcrypt(request.password)
+        new_user = tables.User(**request.dict())
         self.db.add(new_user)
         self.db.commit()
         self.db.refresh(new_user)

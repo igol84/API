@@ -1,30 +1,30 @@
 from typing import Optional
-
 from pydantic import BaseModel
+from .seller import Seller
 
 
 class BaseUser(BaseModel):
-    name: str
     email: str
     password: str
+    role: str
 
 
 class CreateUser(BaseUser):
-    pass
+    id: int
 
 
 class User(BaseModel):
     id: int
-    name: str
     email: str
+    role: str
 
     class Config:
         orm_mode = True
 
 
 class ShowUser(BaseModel):
-    name: str
     email: str
+    seller: Seller
 
     class Config:
         orm_mode = True
@@ -42,3 +42,4 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     email: Optional[str] = None
+    role: str

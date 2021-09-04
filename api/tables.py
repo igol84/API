@@ -8,10 +8,10 @@ from .database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
+    id = Column(Integer, ForeignKey('sellers.id'), primary_key=True, index=True)
     email = Column(String)
     password = Column(String)
+    role = Column(String)
 
 
 class Store(Base):

@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends
 from .. import crud
-from ..auth2 import get_current_user
+from ..auth2 import RoleChecker
 from ..schemas import user as schemas
 
-router = APIRouter(tags=['Users'], prefix='/user', dependencies=[Depends(get_current_user)]) #
+allow_create_resource = RoleChecker(["admin"])
+router = APIRouter(tags=['Users'], prefix='/user', dependencies=[Depends(allow_create_resource)])
 
 
 @router.post('/', response_model=schemas.User)

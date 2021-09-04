@@ -8,6 +8,11 @@ class BaseShoes(BaseModel):
     length: float
     width: str
 
+class UpdateShoes(BaseModel):
+    color: str
+    size: float
+    length: float
+    width: str
 
 class CreateShoes(BaseShoes):
     pass
