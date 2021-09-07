@@ -8,6 +8,7 @@ allow_create_resource = RoleChecker(["admin"])
 allow_read_resource = RoleChecker(["admin", "user"])
 router = APIRouter(tags=['Products'], prefix='/prod')
 
+
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Product,
              dependencies=[Depends(allow_create_resource)])
 def create(request: schemas.CreateProduct, crud_prod: crud.Product = Depends()):
