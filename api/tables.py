@@ -20,7 +20,6 @@ class Store(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     desc = Column(String)
-    sales = relationship('Sale', back_populates='store')
     sellers = relationship('Seller', backref='store')
     places = relationship('Place', backref='store')
     items = relationship('Item', backref='store')
@@ -30,11 +29,9 @@ class Sale(Base):
     __tablename__ = "sales"
 
     id = Column(Integer, primary_key=True, index=True)
-    store_id = Column(Integer, ForeignKey('stores.id'))
     seller_id = Column(Integer, ForeignKey('sellers.id'))
     place_id = Column(Integer, ForeignKey('places.id'))
     date_time = Column(DateTime, default=datetime.now)
-    store = relationship('Store', back_populates='sales')
     seller = relationship('Seller', backref='sales')
     place = relationship('Place', backref='sales')
     sale_line_items = relationship('SaleLineItem', back_populates='sale')

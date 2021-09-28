@@ -6,7 +6,6 @@ from .place import Place
 
 
 class BaseSale(BaseModel):
-    store_id: int
     seller_id: int
     place_id: int
     date_time: datetime
