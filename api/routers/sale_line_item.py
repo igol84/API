@@ -29,7 +29,7 @@ def update(sale_id: int, item_id: int, sale_price: float,
     return sale_line_item.update_sli(sale_id, item_id, sale_price, request)
 
 
-@router.delete('/{sale_id}/{item_id}/{sale_price')
+@router.delete('/{sale_id}/{item_id}/{sale_price}')
 def delete(sale_id: int, item_id: int, sale_price: float, sale_line_item: crud.SaleLineItem = Depends()):
     sale_line_item.delete_sli(sale_id, item_id, sale_price)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
