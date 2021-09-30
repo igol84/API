@@ -9,3 +9,4 @@ from .place import Place
 from .sale_line_item import SaleLineItem
 from .sale import Sale
 from .store import Store
+from .product_catalog import ProductCatalog

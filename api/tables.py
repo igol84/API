@@ -23,6 +23,7 @@ class Store(Base):
     sellers = relationship('Seller', backref='store')
     places = relationship('Place', backref='store')
     items = relationship('Item', backref='store')
+    products_catalog = relationship('ProductCatalog', backref='store')
 
 
 class Sale(Base):
@@ -45,6 +46,7 @@ class Product(Base):
     name = Column(String)
     price = Column(Float)
     shoes = relationship('Shoes', backref='product', uselist=False, cascade='all, delete')
+    product_catalogs = relationship('ProductCatalog', back_populates='product')
 
 
 class Shoes(Base):
@@ -93,3 +95,11 @@ class SaleLineItem(Base):
     qty = Column(Integer)
     item = relationship('Item', backref='sale_line_items')
     sale = relationship('Sale', back_populates='sale_line_items')
+
+
+class ProductCatalog(Base):
+    __tablename__ = "product_catalogs"
+
+    store_id = Column(Integer, ForeignKey('stores.id'), primary_key=True, index=True)
+    prod_id = Column(Integer, ForeignKey('products.id'), primary_key=True, index=True)
+    product = relationship('Product', back_populates='product_catalogs')

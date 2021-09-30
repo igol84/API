@@ -20,9 +20,11 @@ class Store(BaseStore):
 from .seller import Seller
 from .place import Place
 from .item import ShowItemWithProduct
+from .product_catalog import ShowProductCatalogWithProduct
 
 
 class StoreWithDetails(Store):
     sellers: list[Seller]
     places: list[Place]
     items: list[ShowItemWithProduct]
+    products_catalog: list[ShowProductCatalogWithProduct]
