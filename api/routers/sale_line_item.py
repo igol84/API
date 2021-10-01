@@ -11,6 +11,9 @@ router = APIRouter(tags=['SaleLineItems'], prefix='/sale_line_item', dependencie
 def create(request: schemas.CreateSaleLineItem, sale_line_item: crud.SaleLineItem = Depends()):
     return sale_line_item.create(request)
 
+@router.post('/many', status_code=status.HTTP_201_CREATED, response_model=list[schemas.SaleLineItem])
+def create_many(request: list[schemas.CreateSaleLineItem], sale_line_item: crud.SaleLineItem = Depends()):
+    return sale_line_item.create_many(request)
 
 @router.get('/', response_model=list[schemas.ShowSaleLineItemWithItem])
 def get_all(skip: int = None, limit: int = None, search: str = None, sli: crud.SaleLineItem = Depends()):

@@ -32,3 +32,9 @@ class SaleLineItem(CRUDBase[tables.SaleLineItem, schemas.CreateSaleLineItem, sch
         db_obj = self._get_sli(sale_id, item_id, sale_price)
         db_obj.delete(synchronize_session=False)
         self.db.commit()
+
+    def create_many(self, sale_line_items: list[schemas.CreateSaleLineItem]) -> list[table]:
+        operations = [self.table(**sale_line_item.dict()) for sale_line_item in sale_line_items]
+        self.db.add_all(operations)
+        self.db.commit()
+        return operations
