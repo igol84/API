@@ -7,7 +7,7 @@ from ..auth2 import get_current_user
 router = APIRouter(tags=['Sales'], prefix='/sale', dependencies=[Depends(get_current_user)])
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Sale)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.ShowSaleWithSLIs)
 def create(request: schemas.CreateSale, crud_sale: crud.Sale = Depends()):
     return crud_sale.create(request)
 
