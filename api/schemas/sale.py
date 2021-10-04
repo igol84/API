@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from .sale_line_item import ShowSaleLineItemWithItem
+from .sale_line_item import ShowSaleLineItemWithItem, CreateSaleLineItemForSale
 from .seller import Seller
 from .place import Place
 
@@ -12,7 +12,7 @@ class BaseSale(BaseModel):
 
 
 class CreateSale(BaseSale):
-    pass
+    sale_line_items: list[CreateSaleLineItemForSale]
 
 
 class Sale(BaseSale):
