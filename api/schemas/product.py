@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from .shoes import Shoes
+from .shoes import CreateShoesWithProduct, Shoes
 
 
 class BaseProduct(BaseModel):
@@ -12,7 +12,7 @@ class BaseProduct(BaseModel):
 
 
 class CreateProduct(BaseProduct):
-    pass
+    shoes: Optional[CreateShoesWithProduct] = None
 
 
 class Product(BaseProduct):

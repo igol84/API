@@ -18,6 +18,10 @@ class CreateShoes(BaseShoes):
     pass
 
 
+class CreateShoesWithProduct(UpdateShoes):
+    pass
+
+
 class Shoes(BaseShoes):
     pass
 
