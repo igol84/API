@@ -7,11 +7,11 @@ from ..auth2 import get_current_user
 router = APIRouter(tags=['SaleLineItems'], prefix='/sale_line_item', dependencies=[Depends(get_current_user)])
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.SaleLineItem)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.ShowSaleLineItemWithItem)
 def create(request: schemas.CreateSaleLineItem, sale_line_item: crud.SaleLineItem = Depends()):
     return sale_line_item.create(request)
 
-@router.post('/many', status_code=status.HTTP_201_CREATED, response_model=list[schemas.SaleLineItem])
+@router.post('/many', status_code=status.HTTP_201_CREATED, response_model=list[schemas.ShowSaleLineItemWithItem])
 def create_many(request: list[schemas.CreateSaleLineItem], sale_line_item: crud.SaleLineItem = Depends()):
     return sale_line_item.create_many(request)
 
@@ -26,7 +26,7 @@ def show(sale_id: int, item_id: int, sale_price: float, crud_sale_line_item: cru
 
 
 @router.put('/{sale_id}/{item_id}/{sale_price}', status_code=status.HTTP_202_ACCEPTED,
-            response_model=schemas.SaleLineItem)
+            response_model=schemas.ShowSaleLineItemWithItem)
 def update(sale_id: int, item_id: int, sale_price: float,
            request: schemas.BaseSaleLineItem, sale_line_item: crud.SaleLineItem = Depends()):
     return sale_line_item.update_sli(sale_id, item_id, sale_price, request)
