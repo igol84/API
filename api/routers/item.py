@@ -7,7 +7,7 @@ from ..auth2 import get_current_user
 router = APIRouter(tags=['Items'], prefix='/item', dependencies=[Depends(get_current_user)])
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Item)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.ShowItemWithProduct)
 def create(request: schemas.CreateItem, crud_item: crud.Item = Depends()):
     return crud_item.create(request)
 
@@ -22,12 +22,12 @@ def show(item_id: int, crud_item: crud.Item = Depends()):
     return crud_item.get(item_id)
 
 
-@router.get('/by_prod_id/{prod_id}', status_code=200, response_model=list[schemas.Item])
+@router.get('/by_prod_id/{prod_id}', status_code=200, response_model=list[schemas.ShowItemWithProduct])
 def get_all_by_user_id(prod_id: int, skip: int = None, limit: int = None, crud_item: crud.Item = Depends()):
     return crud_item.get_by_product_id(prod_id, skip, limit)
 
 
-@router.put('/{item_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Item)
+@router.put('/{item_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowItemWithProduct)
 def update(item_id: int, request: schemas.BaseItem, crud_item: crud.Item = Depends()):
     return crud_item.update(item_id, request)
 
