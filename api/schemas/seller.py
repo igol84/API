@@ -10,6 +10,10 @@ class CreateSeller(BaseSeller):
     pass
 
 
+class UpdateSeller(CreateSeller):
+    id: int
+
+
 class Seller(BaseSeller):
     id: int
 
