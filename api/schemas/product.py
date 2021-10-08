@@ -1,7 +1,5 @@
 from typing import Optional
-
 from pydantic import BaseModel
-
 from .shoes import CreateShoesWithProduct, Shoes
 
 
@@ -16,7 +14,7 @@ class CreateProduct(BaseProduct):
 
 
 class UpdateProduct(CreateProduct):
-    pass
+    id: Optional[int] = None
 
 
 class Product(BaseProduct):
