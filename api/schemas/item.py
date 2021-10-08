@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from .product import Product
 
+
 class BaseItem(BaseModel):
     prod_id: int
     store_id: int
@@ -17,6 +18,7 @@ class Item(BaseItem):
 
     class Config:
         orm_mode = True
+
 
 class ShowItemWithProduct(Item):
     product: Product
