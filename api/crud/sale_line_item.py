@@ -20,7 +20,6 @@ class SaleLineItem(CRUDBase[tables.SaleLineItem, schemas.CreateSaleLineItem, sch
                                        f' is already available')
         else:
             db_obj = self.table(**request.dict())
-            db_obj = self._get_sli(db_obj.sale_id, db_obj.item_id, db_obj.sale_price)
             self.db.add(db_obj)
             self.db.commit()
             self.db.refresh(db_obj)
