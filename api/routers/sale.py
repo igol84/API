@@ -22,7 +22,7 @@ def show(sale_id: int, crud_sale: crud.Sale = Depends()):
     return crud_sale.get(sale_id)
 
 
-@router.put('/{sale_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Sale)
+@router.put('/{sale_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowSaleWithSLIs)
 def update(sale_id: int, request: schemas.BaseSale, crud_sale: crud.Sale = Depends()):
     return crud_sale.update(sale_id, request)
 
