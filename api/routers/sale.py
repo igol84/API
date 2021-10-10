@@ -23,8 +23,8 @@ def show(sale_id: int, crud_sale: crud.Sale = Depends()):
 
 
 @router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowSaleWithSLIs)
-def update(request: schemas.UpdateSale, crud_sale: crud.Sale = Depends()):
-    return crud_sale.update(request)
+def update(sale_id: int, request: schemas.UpdateSale, crud_sale: crud.Sale = Depends()):
+    return crud_sale.update(sale_id, request)
 
 
 @router.delete('/{sale_id}')
