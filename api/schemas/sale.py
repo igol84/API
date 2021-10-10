@@ -15,8 +15,11 @@ class CreateSale(BaseSale):
     sale_line_items: list[CreateSaleLineItemForSale]
 
 
-class Sale(BaseSale):
+class UpdateSale(CreateSale):
     id: int
+
+
+class Sale(UpdateSale):
 
     class Config:
         orm_mode = True
