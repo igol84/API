@@ -12,6 +12,8 @@ class BaseItem(BaseModel):
 class CreateItem(BaseItem):
     pass
 
+class UpdateItem(BaseItem):
+    id: int
 
 class Item(BaseItem):
     id: int

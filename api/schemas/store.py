@@ -10,6 +10,10 @@ class CreateStore(BaseStore):
     pass
 
 
+class UpdateStore(BaseStore):
+    id: int
+
+
 class Store(BaseStore):
     id: int
 

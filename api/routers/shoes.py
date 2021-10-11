@@ -23,9 +23,9 @@ def show(shoes_id: int, crud_shoes: crud.Shoes = Depends()):
     return crud_shoes.get(shoes_id)
 
 
-@router.put('/{shoes_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Shoes)
-def update(shoes_id: int, request: schemas.UpdateShoes, crud_shoes: crud.Shoes = Depends()):
-    return crud_shoes.update(shoes_id, request)
+@router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Shoes)
+def update(request: schemas.UpdateShoes, crud_shoes: crud.Shoes = Depends()):
+    return crud_shoes.update(request)
 
 
 @router.delete('/{shoes_id}')

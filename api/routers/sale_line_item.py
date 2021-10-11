@@ -25,11 +25,10 @@ def show(sale_id: int, item_id: int, sale_price: float, crud_sale_line_item: cru
     return crud_sale_line_item.get_sli(sale_id, item_id, sale_price)
 
 
-@router.put('/{sale_id}/{item_id}/{sale_price}', status_code=status.HTTP_202_ACCEPTED,
+@router.put('/', status_code=status.HTTP_202_ACCEPTED,
             response_model=schemas.ShowSaleLineItemWithItem)
-def update(sale_id: int, item_id: int, sale_price: float,
-           request: schemas.BaseSaleLineItem, sale_line_item: crud.SaleLineItem = Depends()):
-    return sale_line_item.update_sli(sale_id, item_id, sale_price, request)
+def update(request: schemas.UpdateSaleLineItem, sale_line_item: crud.SaleLineItem = Depends()):
+    return sale_line_item.update_sli(request)
 
 
 @router.delete('/{sale_id}/{item_id}/{sale_price}')

@@ -23,9 +23,9 @@ def show(store_id: int, crud_store: crud.Store = Depends()):
     return crud_store.get(store_id)
 
 
-@router.put('/{store_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Store)
-def update(store_id: int, request: schemas.BaseStore, crud_store: crud.Store = Depends()):
-    return crud_store.update(store_id, request)
+@router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Store)
+def update(request: schemas.UpdateStore, crud_store: crud.Store = Depends()):
+    return crud_store.update(request)
 
 
 @router.delete('/{store_id}')

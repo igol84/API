@@ -27,9 +27,9 @@ def get_all_by_user_id(prod_id: int, skip: int = None, limit: int = None, crud_i
     return crud_item.get_by_product_id(prod_id, skip, limit)
 
 
-@router.put('/{item_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowItemWithProduct)
-def update(item_id: int, request: schemas.BaseItem, crud_item: crud.Item = Depends()):
-    return crud_item.update(item_id, request)
+@router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowItemWithProduct)
+def update(request: schemas.UpdateItem, crud_item: crud.Item = Depends()):
+    return crud_item.update(request)
 
 
 @router.delete('/{item_id}')

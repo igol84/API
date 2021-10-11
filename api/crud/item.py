@@ -3,7 +3,7 @@ from ..schemas import item as schemas
 from .base import CRUDBase, HTTPException, status
 
 
-class Item(CRUDBase[tables.Item, schemas.CreateItem, schemas.BaseItem]):
+class Item(CRUDBase[tables.Item, schemas.CreateItem, schemas.UpdateItem]):
     table = tables.Item
 
     def get_by_product_id(self, prod_id: int, skip: int = 0, limit: int = None) -> list[tables.Product]:

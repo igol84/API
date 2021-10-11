@@ -23,18 +23,18 @@ class Product(CRUDBase[tables.Product, schemas.CreateProduct, schemas.BaseProduc
         self.db.refresh(product_row)
         return product_row
 
-    def update(self, base_id: int, request: schemas.Product) -> tables.Product:
-        product_db_row = self._get(base_id)
+    def update(self, request: schemas.Product) -> tables.Product:
+        product_db_row = self._get(request.id)
         old_product_row: tables.Product = product_db_row.first()
         components = self.components
         # delete old component
         for component in components:
             if old_product_row.type == component:
-                db_obj = self.db.query(components[component]).filter(components[component].id == base_id)
+                db_obj = self.db.query(components[component]).filter(components[component].id == request.id)
                 if not db_obj.first():
                     raise HTTPException(
                         status_code=status.HTTP_404_NOT_FOUND,
-                        detail=f'{components[component].__name__} with the id \'{base_id}\' is not available')
+                        detail=f'{components[component].__name__} with the id \'{request.id}\' is not available')
                 db_obj.delete(synchronize_session=False)
                 break
         # update product without component

@@ -16,6 +16,7 @@ UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     table = None
     search_columns = []
+    key = 'id'
 
     def __init__(self, db: Session = Depends(database.get_db)):
         self.db = db
@@ -57,8 +58,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             db_obj = db_obj.filter(or_(*search))
         return db_obj[SLICE]
 
-    def update(self, base_id: int, request: UpdateSchemaType) -> ModelType:
-        db_obj = self._get(base_id)
+    def update(self, request: UpdateSchemaType) -> ModelType:
+        db_obj = self._get(request.__dict__[self.key])
         db_obj.update(request.dict())
         self.db.commit()
         return db_obj.first()

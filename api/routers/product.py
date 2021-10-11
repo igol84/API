@@ -27,10 +27,10 @@ def show(prod_id: int, crud_prod: crud.Product = Depends()):
     return crud_prod.get(prod_id)
 
 
-@router.put('/{prod_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Product,
+@router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Product,
             dependencies=[Depends(allow_create_resource)])
-def update(prod_id: int, request: schemas.UpdateProduct, crud_prod: crud.Product = Depends()):
-    return crud_prod.update(prod_id, request)
+def update(request: schemas.UpdateProduct, crud_prod: crud.Product = Depends()):
+    return crud_prod.update(request)
 
 
 @router.delete('/{prod_id}', dependencies=[Depends(allow_create_resource)])

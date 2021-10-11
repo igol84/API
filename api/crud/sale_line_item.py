@@ -3,7 +3,7 @@ from ..schemas import sale_line_item as schemas
 from .base import CRUDBase, HTTPException, status
 
 
-class SaleLineItem(CRUDBase[tables.SaleLineItem, schemas.CreateSaleLineItem, schemas.BaseSaleLineItem]):
+class SaleLineItem(CRUDBase[tables.SaleLineItem, schemas.CreateSaleLineItem, schemas.UpdateSaleLineItem]):
     table = tables.SaleLineItem
     schema = schemas.BaseSaleLineItem
 
@@ -40,8 +40,8 @@ class SaleLineItem(CRUDBase[tables.SaleLineItem, schemas.CreateSaleLineItem, sch
     def get_sli(self, sale_id: int, item_id: int, sale_price: float) -> table:
         return self._get_sli(sale_id, item_id, sale_price).first()
 
-    def update_sli(self, sale_id: int, item_id: int, sale_price: float, request: schema) -> table:
-        db_obj = self._get_sli(sale_id, item_id, sale_price)
+    def update_sli(self, request: schemas.UpdateSaleLineItem) -> table:
+        db_obj = self._get_sli(request.sale_id, request.item_id, request.sale_price)
         db_obj.update(request.dict())
         self.db.commit()
         return db_obj.first()

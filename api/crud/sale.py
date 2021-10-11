@@ -14,12 +14,12 @@ class Sale(CRUDBase[tables.Sale, schemas_sale.CreateSale, schemas_sale.BaseSale]
         self.db.refresh(sale_row)
         return sale_row
 
-    def update(self, sale_id: int, request: schemas_sale.UpdateSale) -> tables.Sale:
-        sale_row = self._get(sale_id)
-        sli_rows = self.db.query(tables.SaleLineItem).filter(tables.SaleLineItem.sale_id == sale_id)
+    def update(self, request: schemas_sale.UpdateSale) -> tables.Sale:
+        sale_row = self._get(request.id)
+        sli_rows = self.db.query(tables.SaleLineItem).filter(tables.SaleLineItem.sale_id == request.id)
         sli_rows.delete(synchronize_session=False)
         sale_row.update(request.dict(exclude={'sale_line_items'}))
-        sale_line_items = [tables.SaleLineItem(sale_id=sale_id, **pd_sli.dict()) for pd_sli in request.sale_line_items]
+        sale_line_items = [tables.SaleLineItem(sale_id=request.id, **pd_sli.dict()) for pd_sli in request.sale_line_items]
         self.db.add_all(sale_line_items)
         self.db.commit()
         return sale_row.first()
