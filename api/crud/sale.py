@@ -19,7 +19,8 @@ class Sale(CRUDBase[tables.Sale, schemas_sale.CreateSale, schemas_sale.BaseSale]
         sli_rows = self.db.query(tables.SaleLineItem).filter(tables.SaleLineItem.sale_id == request.id)
         sli_rows.delete(synchronize_session=False)
         sale_row.update(request.dict(exclude={'sale_line_items'}))
-        sale_line_items = [tables.SaleLineItem(sale_id=request.id, **pd_sli.dict()) for pd_sli in request.sale_line_items]
+        sale_line_items = [tables.SaleLineItem(sale_id=request.id, **pd_sli.dict()) for pd_sli in
+                           request.sale_line_items]
         self.db.add_all(sale_line_items)
         self.db.commit()
         return sale_row.first()
