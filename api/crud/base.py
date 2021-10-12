@@ -25,7 +25,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def create(self, request: CreateSchemaType) -> ModelType:
         if not self.autoincrement:
             keys = [getattr(request, key) for key in self.keys]
-            if self._check(*keys):
+            if self.check(*keys):
                 dict_keys = dict(zip(self.keys, keys))
                 key_m = ', '.join([f'\'{key}\':\'{value}\'' for key, value in dict_keys.items()])
                 err_mes = f'{self.table.__name__} with the {key_m} already available'
@@ -45,7 +45,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def is_id_exist(self, base_id: int):
         return self.db.query(self.table).filter(self.table.id == base_id).first()
 
-    def _check(self, *keys):
+    def check(self, *keys):
         dict_keys = dict(zip(self.keys, keys))
         filter_table = [getattr(self.table, key) == value for key, value in dict_keys.items()]
         db_obj = self.db.query(self.table).filter(*filter_table)
