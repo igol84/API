@@ -24,7 +24,7 @@ def show(place_id: int, crud_place: crud.Place = Depends()):
 
 
 @router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Place)
-def update(request: schemas.BasePlace, crud_place: crud.Place = Depends()):
+def update(request: schemas.UpdatePlace, crud_place: crud.Place = Depends()):
     return crud_place.update(request)
 
 

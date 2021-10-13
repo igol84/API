@@ -8,7 +8,7 @@ allow_create_resource = RoleChecker(["admin"])
 router = APIRouter(tags=['Stores'], prefix='/store', dependencies=[Depends(allow_create_resource)])
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Store)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.StoreWithDetails)
 def create(request: schemas.CreateStore, crud_store: crud.Store = Depends()):
     return crud_store.create(request)
 
@@ -23,7 +23,7 @@ def show(store_id: int, crud_store: crud.Store = Depends()):
     return crud_store.get(store_id)
 
 
-@router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Store)
+@router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.StoreWithDetails)
 def update(request: schemas.UpdateStore, crud_store: crud.Store = Depends()):
     return crud_store.update(request)
 
