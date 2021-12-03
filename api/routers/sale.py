@@ -13,8 +13,9 @@ def create(request: schemas.CreateSale, crud_sale: crud.Sale = Depends()):
 
 
 @router.get('/', response_model=list[schemas.ShowSaleWithSLIs])
-def get_all(skip: int = None, limit: int = None, date: str = None, crud_sale: crud.Sale = Depends()):
-    return crud_sale.get_all(skip, limit, date)
+def get_all(skip: int = None, limit: int = None, date: str = None, place_id: int = None,
+                seller_id: int = None, store_id: int = None, crud_sale: crud.Sale = Depends()):
+    return crud_sale.get_all(skip, limit, date, place_id, seller_id, store_id)
 
 
 @router.get('/{sale_id}', status_code=200, response_model=schemas.ShowSaleWithSLIs)

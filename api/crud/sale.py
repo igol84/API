@@ -10,7 +10,8 @@ from .base import CRUDBase
 class Sale(CRUDBase[tables.Sale, schemas_sale.CreateSale, schemas_sale.BaseSale]):
     table = tables.Sale
 
-    def get_all(self, skip: int = 0, limit: int = None, date: str = None) -> list[table]:
+    def get_all(self, skip: int = 0, limit: int = None, date: str = None, place_id: int = None,
+                seller_id: int = None, store_id: int = None) -> list[table]:
         if limit:
             if skip:
                 SLICE = slice(skip, skip + limit)
@@ -19,11 +20,17 @@ class Sale(CRUDBase[tables.Sale, schemas_sale.CreateSale, schemas_sale.BaseSale]
         else:
             SLICE = slice(skip, None)
         db_obj = self.db.query(self.table)
-
+        if store_id:
+            db_obj = db_obj.from_self().join(tables.Place).filter(tables.Place.store_id == store_id)
         if date:
             date_dt_min = datetime.datetime.fromisoformat(date).date()
             date_dt_max = datetime.datetime.fromisoformat(date).date() + datetime.timedelta(days=1)
             db_obj = db_obj.filter(self.table.date_time >= date_dt_min).filter(self.table.date_time < date_dt_max)
+        if place_id:
+            db_obj = db_obj.filter(self.table.place_id == place_id)
+        if seller_id:
+            db_obj = db_obj.filter(self.table.seller_id == seller_id)
+
         return db_obj[SLICE]
 
     def create(self, request: schemas_sale.CreateSale) -> tables.Sale:
