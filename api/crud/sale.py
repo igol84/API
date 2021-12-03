@@ -1,8 +1,6 @@
 import datetime
 from collections import Counter
 
-from sqlalchemy import func
-
 from .. import tables
 from ..schemas import sale as schemas_sale
 from ..schemas import item as schemas_item
@@ -23,8 +21,9 @@ class Sale(CRUDBase[tables.Sale, schemas_sale.CreateSale, schemas_sale.BaseSale]
         db_obj = self.db.query(self.table)
 
         if date:
-            date_dt = datetime.datetime.strptime(date, '%Y-%m-%d').date()
-            db_obj = db_obj.filter(func.Date(self.table.date_time) == date_dt)
+            date_dt_min = datetime.datetime.fromisoformat(date).date()
+            date_dt_max = datetime.datetime.fromisoformat(date).date() + datetime.timedelta(days=1)
+            db_obj = db_obj.filter(self.table.date_time >= date_dt_min).filter(self.table.date_time < date_dt_max)
         return db_obj[SLICE]
 
     def create(self, request: schemas_sale.CreateSale) -> tables.Sale:
