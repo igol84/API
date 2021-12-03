@@ -1,4 +1,8 @@
+import datetime
 from collections import Counter
+
+from sqlalchemy import func
+
 from .. import tables
 from ..schemas import sale as schemas_sale
 from ..schemas import item as schemas_item
@@ -7,6 +11,21 @@ from .base import CRUDBase
 
 class Sale(CRUDBase[tables.Sale, schemas_sale.CreateSale, schemas_sale.BaseSale]):
     table = tables.Sale
+
+    def get_all(self, skip: int = 0, limit: int = None, date: str = None) -> list[table]:
+        if limit:
+            if skip:
+                SLICE = slice(skip, skip + limit)
+            else:
+                SLICE = slice(skip, limit)
+        else:
+            SLICE = slice(skip, None)
+        db_obj = self.db.query(self.table)
+
+        if date:
+            date_dt = datetime.datetime.strptime(date, '%Y-%m-%d').date()
+            db_obj = db_obj.filter(func.Date(self.table.date_time) == date_dt)
+        return db_obj[SLICE]
 
     def create(self, request: schemas_sale.CreateSale) -> tables.Sale:
         sale_row = tables.Sale(**request.dict(exclude={'sale_line_items'}))
