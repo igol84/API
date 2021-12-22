@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+
 from .product import Product
 
 
@@ -12,8 +13,10 @@ class BaseItem(BaseModel):
 class CreateItem(BaseItem):
     pass
 
+
 class UpdateItem(BaseItem):
     id: int
+
 
 class Item(BaseItem):
     id: int

@@ -8,10 +8,12 @@ class EditSLIPrice(BaseModel):
     old_sli: SaleLineItem
     new_sli: SaleLineItem
 
+
 class SaleLineItemKeys(BaseModel):
     sale_id: int
     item_id: int
     sale_price: float
+
 
 class PutItemToOldSale(BaseModel):
     sale_id: int
