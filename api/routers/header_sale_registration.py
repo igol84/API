@@ -9,5 +9,5 @@ router = APIRouter(tags=['HeaderSaleRegistration'], prefix='/header_sale_registr
 
 
 @router.put('/edit_sli_price', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.SaleLineItem)
-def edit_sale_price(request: schemas.EditSLIPrice, sale_line_item: crud.SaleLineItem = Depends()):
+def edit_sale_price(request: schemas.EditSLIPrice, sale_line_item: crud.HeaderSaleRegistration = Depends()):
     return sale_line_item.edit_sli_price(request)
