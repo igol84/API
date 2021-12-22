@@ -28,6 +28,7 @@ class HeaderSaleRegistration:
         self.db.commit()
 
     def put_items_from_old_sale(self, request: PutItemToOldSale) -> None:
+        # delete sale items
         table = tables.SaleLineItem
         for del_sli in request.list_del_sli:
             row_sli = self.db.query(table).filter(
@@ -40,12 +41,12 @@ class HeaderSaleRegistration:
                 err_mess = f'{table.__name__} with the {key_m} not available'
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=err_mess)
             row_sli.delete(synchronize_session=False)
-
+        # create items
         table = tables.Item
         for pd_item in request.list_new_items:
             new_item = table(**pd_item.dict())
             self.db.add(new_item)
-
+        # update items
         for pd_item in request.list_update_items:
             row_item = self.db.query(table).filter(table.id == pd_item.id)
             if not row_item.first():
@@ -53,7 +54,7 @@ class HeaderSaleRegistration:
                 err_mess = f'{table.__name__} with the {key_m} not available'
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=err_mess)
             row_item.update(pd_item.dict())
-
+        # delete empty sale
         if request.delete:
             table = tables.Sale
             row_sale = self.db.query(table).filter(table.id == request.sale_id)
