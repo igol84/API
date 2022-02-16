@@ -15,4 +15,4 @@ class Auth(CRUDBase):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f'Incorrect password')
         access_token = token.create_access_token(data={"sub": user.email, "role": user.role})
-        return {"access_token": access_token}
+        return {"access_token": access_token, "store_id": 1}

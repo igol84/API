@@ -1,5 +1,7 @@
 from typing import Optional
+
 from pydantic import BaseModel
+
 from .seller import Seller
 
 
@@ -38,6 +40,7 @@ class Login(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str = 'bearer'
+    store_id: str
 
 
 class TokenData(BaseModel):
