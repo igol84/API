@@ -16,7 +16,7 @@ def create(request: schemas.CreateStore, crud_store: crud.Store = Depends()):
 
 
 @router.get('/', response_model=list[schemas.StoreWithDetails],
-             dependencies=[Depends(allow_read_resource)])
+             dependencies=[Depends(allow_create_resource)])
 def get_all(skip: int = None, limit: int = None, search: str = None, crud_store: crud.Store = Depends()):
     return crud_store.get_all(skip, limit, search)
 
