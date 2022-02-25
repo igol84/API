@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import datetime, date
 
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Date
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -65,6 +65,7 @@ class Item(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer, ForeignKey('stores.id'))
+    date_buy = Column(Date, default=date.today())
     prod_id = Column(Integer, ForeignKey('products.id'))
     qty = Column(Integer)
     buy_price = Column(Float)

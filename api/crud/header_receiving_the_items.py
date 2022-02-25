@@ -1,3 +1,5 @@
+import datetime
+
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
@@ -19,7 +21,7 @@ class HeaderReceivingTheItems:
             if data.id:
                 # create new item
                 pd_item = CreateItem(prod_id=data.id, store_id=data.store_id, qty=data.qty,
-                                     buy_price=data.price_buy)
+                                     buy_price=data.price_buy, date_buy=datetime.date.today())
                 new_item = tables.Item(**pd_item.dict())
                 self.db.add(new_item)
                 self.db.commit()
@@ -41,7 +43,7 @@ class HeaderReceivingTheItems:
                     self.db.commit()
                 # create new item
                 pd_item = CreateItem(prod_id=product.id, store_id=data.store_id, qty=data.qty,
-                                     buy_price=data.price_buy)
+                                     buy_price=data.price_buy, date_buy=datetime.date.today())
                 new_item = tables.Item(**pd_item.dict())
                 self.db.add(new_item)
                 self.db.commit()
@@ -61,7 +63,7 @@ class HeaderReceivingTheItems:
                     # create new item for product.shoes id:', result.prod_id
 
                     pd_item = CreateItem(prod_id=db_sizes[key]['id'], store_id=data.store_id, qty=pd_size.qty,
-                                         buy_price=data.price_buy)
+                                         buy_price=data.price_buy, date_buy=datetime.date.today())
                     new_item = tables.Item(**pd_item.dict())
                     self.db.add(new_item)
                     self.db.commit()
@@ -78,7 +80,7 @@ class HeaderReceivingTheItems:
                     pc = tables.ProductCatalog(**pd_pc.dict())
                     self.db.add(pc)
                     pd_item = CreateItem(prod_id=product.id, store_id=data.store_id, qty=pd_size.qty,
-                                         buy_price=data.price_buy)
+                                         buy_price=data.price_buy, date_buy=datetime.date.today())
                     new_item = tables.Item(**pd_item.dict())
                     self.db.add(new_item)
                     self.db.commit()
