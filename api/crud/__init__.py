@@ -10,5 +10,5 @@ from .sale_line_item import SaleLineItem
 from .sale import Sale
 from .store import Store
 from .product_catalog import ProductCatalog
-from .header_sale_registration import HeaderSaleRegistration
-from .header_receiving_the_items import HeaderReceivingTheItems
+from .handler_sale_registration import HeaderSaleRegistration
+from .handler_receiving_the_items import HeaderReceivingTheItems

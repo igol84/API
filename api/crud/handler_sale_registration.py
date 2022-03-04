@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from .. import database
 from .. import tables
-from ..schemas.header_sale_registration import EditSLIPrice, PutItemToOldSale
+from ..schemas.handler_sale_registration import EditSLIPrice, PutItemToOldSale
 
 
 class HeaderSaleRegistration:

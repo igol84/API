@@ -1,7 +1,7 @@
 from .base import CRUDBase
 from .. import tables
 from ..schemas import sale_line_item as schemas
-from ..schemas.header_sale_registration import EditSLIPrice
+from ..schemas.handler_sale_registration import EditSLIPrice
 
 
 class SaleLineItem(CRUDBase[tables.SaleLineItem, schemas.CreateSaleLineItem, schemas.UpdateSaleLineItem]):

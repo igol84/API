@@ -11,8 +11,8 @@ from .sale_line_item import router as sale_line_item_router
 from .sale import router as sale_router
 from .store import router as store_router
 from .product_catalog import router as product_catalog_router
-from .header_sale_registration import router as header_sale_registration_router
-from .header_receiving_the_items import router as header_receiving_the_items
+from .handler_sale_registration import router as header_sale_registration_router
+from .handler_receiving_the_items import router as header_receiving_the_items
 
 router = APIRouter()
 router.include_router(auth_router)

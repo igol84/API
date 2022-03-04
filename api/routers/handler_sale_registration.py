@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status
 
 from .. import crud
 from ..auth2 import get_current_user
-from ..schemas import header_sale_registration as schemas
+from ..schemas import handler_sale_registration as schemas
 
 router = APIRouter(tags=['HeaderSaleRegistration'], prefix='/header_sale_registration',
                    dependencies=[Depends(get_current_user)])
