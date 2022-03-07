@@ -11,9 +11,17 @@ class HandlerProductPriceEditor:
         self.db = db
 
     def edit_product(self, data: ModelProduct) -> None:
-        product = self.db.query(tables.Product).filter(
-            tables.Product.id == data.id)
-        product.update({'price': data.price_for_sale})
-        product = product.first()
-        self.db.commit()
-        return ModelProduct(id=product.id, price_for_sale=product.price)
+        product = self.db.query(tables.Product).filter(tables.Product.id == data.id)
+        product_row = product.first()
+        edited = False
+        if product_row.price != data.price_for_sale:
+            edited = True
+            product.update({'price': data.price_for_sale})
+        if product_row.shoes.size != data.size:
+            edited = True
+            shoes = self.db.query(tables.Shoes).filter(tables.Shoes.id == data.id)
+            shoes.update({'size': data.size})
+        product_row = product.first()
+        if edited:
+            self.db.commit()
+        return ModelProduct(id=product_row.id, price_for_sale=product_row.price, size=product_row.shoes.size)
