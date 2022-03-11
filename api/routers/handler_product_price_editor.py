@@ -8,9 +8,9 @@ router = APIRouter(tags=['HandlerProductPriceEditor'], prefix='/handler_product_
                    dependencies=[Depends(get_current_user)])
 
 
-@router.put('/edit_product', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ModelProduct)
-def edit_product(request: schemas.ModelProduct, crud_handler: crud.HandlerProductPriceEditor = Depends()):
-    return crud_handler.edit_product(request)
+@router.put('/edit_size', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ModelSize)
+def edit_size(request: schemas.ModelSize, crud_handler: crud.HandlerProductPriceEditor = Depends()):
+    return crud_handler.edit_size(request)
 
 
 @router.put('/edit_shoes', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ModelShoes)

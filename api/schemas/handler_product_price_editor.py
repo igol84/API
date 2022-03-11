@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class ModelProduct(BaseModel):
+class ModelSize(BaseModel):
     id: Optional[int] = None
     size: float
     price_for_sale: float

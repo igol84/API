@@ -10,7 +10,7 @@ class HandlerProductPriceEditor:
     def __init__(self, db: Session = Depends(database.get_db)):
         self.db = db
 
-    def edit_product(self, data: schemas.ModelProduct) -> schemas.ModelProduct:
+    def edit_size(self, data: schemas.ModelSize) -> schemas.ModelSize:
         product = self.db.query(tables.Product).filter(tables.Product.id == data.id)
         product_row = product.first()
         edited = False
@@ -24,7 +24,7 @@ class HandlerProductPriceEditor:
         product_row = product.first()
         if edited:
             self.db.commit()
-        return schemas.ModelProduct(id=product_row.id, price_for_sale=product_row.price, size=product_row.shoes.size)
+        return schemas.ModelSize(id=product_row.id, price_for_sale=product_row.price, size=product_row.shoes.size)
 
     def edit_shoes(self, shoes_form: schemas.ModelShoes) -> schemas.ModelShoes:
         if shoes_form.name != shoes_form.new_name or shoes_form.price_for_sale is not None:
