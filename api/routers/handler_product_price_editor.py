@@ -11,3 +11,13 @@ router = APIRouter(tags=['HandlerProductPriceEditor'], prefix='/handler_product_
 @router.put('/edit_product', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ModelProduct)
 def edit_product(request: schemas.ModelProduct, crud_handler: crud.HandlerProductPriceEditor = Depends()):
     return crud_handler.edit_product(request)
+
+
+@router.put('/edit_shoes', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ModelShoes)
+def edit_shoes(request: schemas.ModelShoes, crud_handler: crud.HandlerProductPriceEditor = Depends()):
+    return crud_handler.edit_shoes(request)
+
+
+@router.put('/edit_color', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ModelColor)
+def edit_color(request: schemas.ModelColor, crud_handler: crud.HandlerProductPriceEditor = Depends()):
+    return crud_handler.edit_color(request)
