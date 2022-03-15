@@ -43,11 +43,13 @@ class HandlerProductPriceEditor:
 
     def edit_shoes(self, shoes_form: schemas.ModelShoesForm) -> schemas.ModelShoesForm:
         if shoes_form.name != shoes_form.new_name or shoes_form.price_for_sale is not None:
+            update_data = {}
             products = self.db.query(tables.Product).filter(tables.Product.name == shoes_form.name)
             if shoes_form.name != shoes_form.new_name:
-                products.update({'name': shoes_form.new_name})
+                update_data['name'] = shoes_form.new_name
             if shoes_form.price_for_sale is not None:
-                products.update({'price': shoes_form.price_for_sale})
+                update_data['price'] = shoes_form.price_for_sale
+            products.update(update_data)
             self.db.commit()
         return schemas.ModelShoesForm(name=shoes_form.name, new_name=shoes_form.new_name,
                                       price_for_sale=shoes_form.price_for_sale)
