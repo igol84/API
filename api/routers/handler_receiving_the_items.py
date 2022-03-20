@@ -8,6 +8,6 @@ router = APIRouter(tags=['HandlerReceivingTheItems'], prefix='/handler_receiving
                    dependencies=[Depends(get_current_user)])
 
 
-@router.put('/receiving_the_items', status_code=status.HTTP_202_ACCEPTED)
+@router.put('/receiving_the_items', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.OutputItems)
 def receiving_the_items(request: schemas.ModelProduct, crud_handler: crud.HeaderReceivingTheItems = Depends()):
-    crud_handler.receiving_the_items(request)
+    return crud_handler.receiving_the_items(request)

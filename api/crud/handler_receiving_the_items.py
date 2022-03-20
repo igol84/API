@@ -5,11 +5,12 @@ from sqlalchemy.orm import Session
 
 from .. import database
 from .. import tables
-from ..schemas.handler_receiving_the_items import ModelProduct
-from ..schemas.item import CreateItem
-from ..schemas.product import CreateProduct
+from ..database import row2dict
+from ..schemas.handler_receiving_the_items import ModelProduct, OutputItems
+from ..schemas.item import CreateItem, Item
+from ..schemas.product import CreateProduct, Product
 from ..schemas.product_catalog import CreateRowProductCatalog
-from ..schemas.shoes import CreateShoesWithProduct
+from ..schemas.shoes import CreateShoesWithProduct, Shoes
 
 
 class HeaderReceivingTheItems:
@@ -17,6 +18,8 @@ class HeaderReceivingTheItems:
         self.db = db
 
     def receiving_the_items(self, data: ModelProduct) -> None:
+        new_products = []
+        new_items = []
         if data.type.name == 'product':
             if data.id:
                 # create new item
@@ -25,6 +28,7 @@ class HeaderReceivingTheItems:
                 new_item = tables.Item(**pd_item.dict())
                 self.db.add(new_item)
                 self.db.commit()
+                new_items.append(new_item)
             else:
                 # create new product and item
                 # check product available by name
@@ -37,6 +41,7 @@ class HeaderReceivingTheItems:
                     self.db.add(product)
                     self.db.commit()
                     self.db.refresh(product)
+                    new_products.append(product)
                     pd_pc = CreateRowProductCatalog(store_id=data.store_id, prod_id=product.id)
                     pc = tables.ProductCatalog(**pd_pc.dict())
                     self.db.add(pc)
@@ -47,6 +52,7 @@ class HeaderReceivingTheItems:
                 new_item = tables.Item(**pd_item.dict())
                 self.db.add(new_item)
                 self.db.commit()
+                new_items.append(new_item)
         elif data.type.name == 'shoes':
             products = self.db.query(tables.ProductCatalog, tables.Product, tables.Shoes).filter(
                 tables.ProductCatalog.store_id == data.store_id,
@@ -67,6 +73,7 @@ class HeaderReceivingTheItems:
                     new_item = tables.Item(**pd_item.dict())
                     self.db.add(new_item)
                     self.db.commit()
+                    new_items.append(new_item)
                 else:
                     pd_product = CreateProduct(type=data.type.name, name=data.name, price=data.price_sell)
                     pd_shoes = CreateShoesWithProduct(color=data.module.color, size=pd_size.size, length=pd_size.length,
@@ -76,6 +83,7 @@ class HeaderReceivingTheItems:
                     self.db.add(product)
                     self.db.commit()
                     self.db.refresh(product)
+                    new_products.append(product)
                     pd_pc = CreateRowProductCatalog(store_id=data.store_id, prod_id=product.id)
                     pc = tables.ProductCatalog(**pd_pc.dict())
                     self.db.add(pc)
@@ -84,3 +92,19 @@ class HeaderReceivingTheItems:
                     new_item = tables.Item(**pd_item.dict())
                     self.db.add(new_item)
                     self.db.commit()
+                    new_items.append(new_item)
+
+            pd_products = []
+            for product in new_products:
+                pd_product = Product(**row2dict(product))
+                if product.shoes:
+                    pd_product.shoes = Shoes(**row2dict(product.shoes))
+                pd_products.append(pd_product)
+
+            pd_items = []
+            for item in new_items:
+                pd_item = Item(**row2dict(item))
+                pd_items.append(pd_item)
+
+            output = OutputItems(products=pd_products, items=pd_items)
+            return output

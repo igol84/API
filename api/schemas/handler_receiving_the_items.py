@@ -2,6 +2,9 @@ from enum import Enum
 from typing import Optional
 from pydantic import BaseModel
 
+from api.schemas.item import Item
+from api.schemas.product import Product
+
 
 class ModelSizeShoes(BaseModel):
     size: Optional[float] = None
@@ -29,3 +32,8 @@ class ModelProduct(BaseModel):
     price_buy: Optional[float] = None
     qty: Optional[int] = None
     module: Optional[ModelShoes] = None
+
+
+class OutputItems(BaseModel):
+    products: Optional[list[Product]] = None
+    items: list[Item]

@@ -36,3 +36,6 @@ def add_user_if_empty():
         db.commit()
 
     db.close()
+
+def row2dict(row):
+    return {column.name: getattr(row, column.name) for column in row.__table__.columns}
