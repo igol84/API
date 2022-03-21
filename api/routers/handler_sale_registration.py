@@ -8,8 +8,13 @@ router = APIRouter(tags=['HandlerSaleRegistration'], prefix='/handler_sale_regis
                    dependencies=[Depends(get_current_user)])
 
 
+@router.put('/end_sale', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.OutputEndSale)
+def end_sale(request: schemas.EndSale, handler_sale_registration: crud.HeaderSaleRegistration = Depends()):
+    return handler_sale_registration.end_sale(request)
+
+
 @router.put('/edit_sli_price', status_code=status.HTTP_202_ACCEPTED)
-def edit_sale_price(request: schemas.EditSLIPrice, handler_sale_registration: crud.HeaderSaleRegistration = Depends()):
+def edit_sli_price(request: schemas.EditSLIPrice, handler_sale_registration: crud.HeaderSaleRegistration = Depends()):
     handler_sale_registration.edit_sli_price(request)
 
 

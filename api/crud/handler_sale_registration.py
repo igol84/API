@@ -3,12 +3,33 @@ from sqlalchemy.orm import Session
 
 from .. import database
 from .. import tables
-from ..schemas.handler_sale_registration import EditSLIPrice, PutItemToOldSale
+from ..schemas.handler_sale_registration import EditSLIPrice, PutItemToOldSale, EndSale, OutputEndSale
+from ..schemas.item import Item
+from ..schemas.sale import ShowSaleWithSLIs
 
 
 class HeaderSaleRegistration:
     def __init__(self, db: Session = Depends(database.get_db)):
         self.db = db
+
+    def end_sale(self, data: EndSale) -> OutputEndSale:
+        pd_sale = data.sale
+        sale_row = tables.Sale(**pd_sale.dict(exclude={'sale_line_items'}))
+        sale_row.sale_line_items = [tables.SaleLineItem(**pd_sli.dict()) for pd_sli in pd_sale.sale_line_items]
+        self.db.add(sale_row)
+
+        # Update qty in items
+        for pd_sli in pd_sale.sale_line_items:
+            item_row = self.db.query(tables.Item).filter(tables.Item.id == pd_sli.item_id)
+            item_pd = Item.from_orm(item_row.first())
+            item_pd.qty -= pd_sli.qty
+            item_row.update(item_pd.dict())
+
+        self.db.commit()
+        self.db.refresh(sale_row)
+        pd_new_sale = ShowSaleWithSLIs.from_orm(sale_row)
+        pd_output = OutputEndSale(sale=pd_new_sale)
+        return pd_output
 
     def edit_sli_price(self, request: EditSLIPrice) -> None:
         old_sli = request.old_sli

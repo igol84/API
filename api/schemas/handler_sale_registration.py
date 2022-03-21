@@ -1,7 +1,16 @@
 from pydantic import BaseModel
 
 from .item import CreateItem, UpdateItem
+from .sale import CreateSale, ShowSaleWithSLIs
 from .sale_line_item import SaleLineItem
+
+
+class EndSale(BaseModel):
+    sale: CreateSale
+
+
+class OutputEndSale(BaseModel):
+    sale: ShowSaleWithSLIs
 
 
 class EditSLIPrice(BaseModel):
