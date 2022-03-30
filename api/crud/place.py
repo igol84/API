@@ -5,4 +5,3 @@ from .base import CRUDBase
 
 class Place(CRUDBase[tables.Place, schemas.CreatePlace, schemas.BasePlace]):
     table = tables.Place
-

@@ -94,17 +94,16 @@ class HeaderReceivingTheItems:
                     self.db.commit()
                     new_items.append(new_item)
 
-            pd_products = []
-            for product in new_products:
-                pd_product = Product(**row2dict(product))
-                if product.shoes:
-                    pd_product.shoes = Shoes(**row2dict(product.shoes))
-                pd_products.append(pd_product)
+        pd_products = []
+        for product in new_products:
+            pd_product = Product(**row2dict(product))
+            if product.shoes:
+                pd_product.shoes = Shoes(**row2dict(product.shoes))
+            pd_products.append(pd_product)
 
-            pd_items = []
-            for item in new_items:
-                pd_item = Item(**row2dict(item))
-                pd_items.append(pd_item)
+        pd_items = []
+        for item in new_items:
+            pd_item = Item(**row2dict(item))
+            pd_items.append(pd_item)
 
-            output = OutputItems(products=pd_products, items=pd_items)
-            return output
+        return OutputItems(products=pd_products, items=pd_items)
