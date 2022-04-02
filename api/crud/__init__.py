@@ -13,3 +13,4 @@ from .product_catalog import ProductCatalog
 from .handler_sale_registration import HeaderSaleRegistration
 from .handler_receiving_the_items import HeaderReceivingTheItems
 from .handler_product_price_editor import HandlerProductPriceEditor
+from .handler_items_editor import HandlerItemEditor

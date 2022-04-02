@@ -14,6 +14,7 @@ from .product_catalog import router as product_catalog_router
 from .handler_sale_registration import router as handler_sale_registration_router
 from .handler_receiving_the_items import router as handler_receiving_the_items_router
 from .handler_product_price_editor import router as handler_product_price_editor_router
+from .handler_items_editor import router as handler_handler_items_editor
 
 router = APIRouter()
 router.include_router(auth_router)
@@ -30,3 +31,4 @@ router.include_router(store_router)
 router.include_router(handler_sale_registration_router)
 router.include_router(handler_receiving_the_items_router)
 router.include_router(handler_product_price_editor_router)
+router.include_router(handler_handler_items_editor)
