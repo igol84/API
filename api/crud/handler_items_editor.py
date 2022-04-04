@@ -44,5 +44,4 @@ class HandlerItemEditor:
         for sale, sli in sales:
             date = sale.date_time.date()
             db_sizes.append(schemas.SaleDetail(sale_id=sale.id, date=date, qty=sli.qty, price=sli.sale_price))
-        print(db_sizes)
         return db_sizes
