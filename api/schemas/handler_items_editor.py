@@ -1,3 +1,5 @@
+import datetime
+
 from pydantic import BaseModel
 
 
@@ -7,5 +9,8 @@ class ItemFormEdit(BaseModel):
     new_price: float
 
 
-class ItemFormDel(BaseModel):
-    id: int
+class SaleDetail(BaseModel):
+    sale_id: int
+    date: datetime.date
+    qty: int
+    price: float

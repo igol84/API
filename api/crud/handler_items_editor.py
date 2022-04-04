@@ -25,12 +25,24 @@ class HandlerItemEditor:
             self.db.commit()
         return schemas.ItemFormEdit(id=item_row.id, new_price=item_row.buy_price, new_qty=item_row.qty)
 
-    def del_item(self, data: schemas.ItemFormDel) -> None:
-        item = self.db.query(tables.Item).filter(tables.Item.id == data.id)
+    def del_item(self, item_id: int) -> None:
+        item = self.db.query(tables.Item).filter(tables.Item.id == item_id)
         if not item.first():
-            key_m = f'item_id:{data.id}'
+            key_m = f'item_id:{item_id}'
             err_mess = f'Item with the {key_m} not available'
             from fastapi import HTTPException
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=err_mess)
         item.delete(synchronize_session=False)
         self.db.commit()
+
+    def get_item_sales(self, item_id: int) -> list[schemas.SaleDetail]:
+        sales = self.db.query(tables.Sale, tables.SaleLineItem).filter(
+            tables.SaleLineItem.item_id == item_id,
+            tables.Sale.id == tables.SaleLineItem.sale_id
+        ).all()
+        db_sizes = []
+        for sale, sli in sales:
+            date = sale.date_time.date()
+            db_sizes.append(schemas.SaleDetail(sale_id=sale.id, date=date, qty=sli.qty, price=sli.sale_price))
+        print(db_sizes)
+        return db_sizes
