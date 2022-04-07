@@ -1,4 +1,4 @@
-from fastapi import Depends, status
+from fastapi import Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
 from .. import database
@@ -28,9 +28,11 @@ class HandlerItemEditor:
     def del_item(self, item_id: int) -> None:
         item = self.db.query(tables.Item).filter(tables.Item.id == item_id)
         if not item.first():
-            key_m = f'item_id:{item_id}'
-            err_mess = f'Item with the {key_m} not available'
-            from fastapi import HTTPException
+            err_mess = f'Item with the ud: {item_id} not available'
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=err_mess)
+        sli = self.db.query(tables.SaleLineItem).filter(tables.SaleLineItem.item_id == item_id)
+        if sli.first():
+            err_mess = f'Item with the {item_id} already exist in sale.'
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=err_mess)
         item.delete(synchronize_session=False)
         self.db.commit()
