@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class BasePlace(BaseModel):
     store_id: int
     name: str
+    hidden: bool
 
 
 class CreatePlace(BasePlace):

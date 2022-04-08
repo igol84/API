@@ -1,6 +1,6 @@
 from datetime import datetime, date
 
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Date, Boolean
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -78,6 +78,7 @@ class Seller(Base):
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer, ForeignKey('stores.id'))
     name = Column(String)
+    hidden = Column(Boolean, default=False)
 
 
 class Place(Base):
@@ -86,6 +87,7 @@ class Place(Base):
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer, ForeignKey('stores.id'))
     name = Column(String)
+    hidden = Column(Boolean, default=False)
 
 
 class SaleLineItem(Base):
