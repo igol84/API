@@ -4,7 +4,7 @@ from pydantic import BaseModel
 class BasePlace(BaseModel):
     store_id: int
     name: str
-    hidden: bool
+    active: bool
 
 
 class CreatePlace(BasePlace):
@@ -33,3 +33,12 @@ class ListPlace(BaseModel):
 
     def __str__(self):
         return str(self.__root__)
+
+class EditPlaceName(BaseModel):
+    place_id: int
+    new_name: str
+
+
+class EditPlaceActive(BaseModel):
+    place_id: int
+    active: bool

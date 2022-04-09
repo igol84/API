@@ -32,3 +32,13 @@ def update(request: schemas.UpdatePlace, crud_place: crud.Place = Depends()):
 def delete(place_id: int, crud_place: crud.Place = Depends()):
     crud_place.delete(place_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.put('/edit_name', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Place)
+def update(request: schemas.EditPlaceName, crud_place: crud.Place = Depends()):
+    return crud_place.edit_name(request)
+
+
+@router.put('/edit_active', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Place)
+def update(request: schemas.EditPlaceActive, crud_place: crud.Place = Depends()):
+    return crud_place.edit_active(request)

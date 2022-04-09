@@ -78,7 +78,7 @@ class Seller(Base):
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer, ForeignKey('stores.id'))
     name = Column(String)
-    hidden = Column(Boolean, default=False)
+    active = Column(Boolean, default=True)
 
 
 class Place(Base):
@@ -87,7 +87,7 @@ class Place(Base):
     id = Column(Integer, primary_key=True, index=True)
     store_id = Column(Integer, ForeignKey('stores.id'))
     name = Column(String)
-    hidden = Column(Boolean, default=False)
+    active = Column(Boolean, default=True)
 
 
 class SaleLineItem(Base):
