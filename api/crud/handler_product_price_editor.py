@@ -36,10 +36,15 @@ class HandlerProductPriceEditor:
             edited = True
             shoes = self.db.query(tables.Shoes).filter(tables.Shoes.id == data.id)
             shoes.update({'size': data.size})
+        if product_row.shoes.length != data.length:
+            edited = True
+            shoes = self.db.query(tables.Shoes).filter(tables.Shoes.id == data.id)
+            shoes.update({'length': data.length})
         product_row = product.first()
         if edited:
             self.db.commit()
-        return schemas.ModelSizeForm(id=product_row.id, price_for_sale=product_row.price, size=product_row.shoes.size)
+        return schemas.ModelSizeForm(id=product_row.id, price_for_sale=product_row.price, size=product_row.shoes.size,
+                                     length=product_row.shoes.length)
 
     def edit_shoes(self, shoes_form: schemas.ModelShoesForm) -> schemas.ModelShoesForm:
         if shoes_form.name != shoes_form.new_name or shoes_form.price_for_sale is not None:

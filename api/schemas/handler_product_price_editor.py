@@ -11,6 +11,7 @@ class ModelProductForm(BaseModel):
 class ModelSizeForm(BaseModel):
     id: Optional[int] = None
     size: float
+    length: Optional[float]
     price_for_sale: float
 
 
