@@ -7,6 +7,7 @@ from .shoes import router as shoes_router
 from .item import router as item_router
 from .seller import router as seller_router
 from .place import router as place_router
+from .expense import router as expense_router
 from .sale_line_item import router as sale_line_item_router
 from .sale import router as sale_router
 from .store import router as store_router
@@ -25,6 +26,7 @@ router.include_router(product_catalog_router)
 router.include_router(item_router)
 router.include_router(seller_router)
 router.include_router(place_router)
+router.include_router(expense_router)
 router.include_router(sale_line_item_router)
 router.include_router(sale_router)
 router.include_router(store_router)

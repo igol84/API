@@ -6,6 +6,7 @@ from .shoes import Shoes
 from .item import Item
 from .seller import Seller
 from .place import Place
+from .expense import Expense
 from .sale_line_item import SaleLineItem
 from .sale import Sale
 from .store import Store

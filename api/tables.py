@@ -90,6 +90,17 @@ class Place(Base):
     active = Column(Boolean, default=True)
 
 
+class Expense(Base):
+    __tablename__ = "expense"
+
+    id = Column(Integer, primary_key=True, index=True)
+    place_id = Column(Integer, ForeignKey('places.id'))
+    desc = Column(String)
+    date_cost = Column(Date, default=date.today())
+    cost = Column(Float)
+    place = relationship('Place', backref='expenses')
+
+
 class SaleLineItem(Base):
     __tablename__ = "sale_line_items"
 
