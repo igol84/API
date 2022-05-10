@@ -118,3 +118,10 @@ class ProductCatalog(Base):
     store_id = Column(Integer, ForeignKey('stores.id'), primary_key=True, index=True)
     prod_id = Column(Integer, ForeignKey('products.id'), primary_key=True, index=True)
     product = relationship('Product', back_populates='product_catalogs')
+
+
+class A(Base):
+    __tablename__ = "a"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
