@@ -96,7 +96,6 @@ class Expense(Base):
     id = Column(Integer, primary_key=True, index=True)
     place_id = Column(Integer, ForeignKey('places.id'))
     desc = Column(String)
-    full_desc = Column(String)
     date_cost = Column(Date, default=date.today())
     cost = Column(Float)
     place = relationship('Place', backref='expenses')
