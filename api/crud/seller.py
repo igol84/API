@@ -1,3 +1,5 @@
+from operator import or_
+
 from .base import CRUDBase
 from .. import tables
 from ..schemas import seller as schemas
@@ -27,3 +29,11 @@ class Seller(CRUDBase[tables.Seller, schemas.CreateSeller, schemas.BaseSeller]):
         if edited:
             self.db.commit()
         return seller_row
+
+    def get_all_deletable(self, store_id: int) -> list[schemas.SellerWithDeletable]:
+
+        db_obj = self.db.query(self.table.id, self.table.store_id, self.table.name, self.table.active, tables.User.email, tables.User.role)\
+            .where(self.table.store_id==store_id)\
+            .join(tables.User, self.table.id==tables.User.id,  isouter = True)
+        return db_obj.all()
+

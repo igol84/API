@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -21,6 +23,12 @@ class Seller(BaseSeller):
     class Config:
         orm_mode = True
 
+class SellerDeletable(BaseSeller):
+    id: int
+
+    class Config:
+        orm_mode = True
+
 
 class EditSellerName(BaseModel):
     seller_id: int
@@ -30,3 +38,11 @@ class EditSellerName(BaseModel):
 class EditSellerActive(BaseModel):
     seller_id: int
     active: bool
+
+class SellerWithDeletable(BaseModel):
+    store_id: int
+    id: int
+    name: str
+    active: bool
+    email: Optional[str]
+    role: Optional[str]

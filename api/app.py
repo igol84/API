@@ -10,8 +10,6 @@ add_user_if_empty()
 
 app = FastAPI()
 
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -24,4 +22,6 @@ app.add_middleware(
 @app.get("/")
 async def main():
     return {"message": "Hello!!!"}
+
+
 app.include_router(router)

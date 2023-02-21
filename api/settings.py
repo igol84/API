@@ -8,7 +8,7 @@ class Settings(BaseSettings):
 
     jwt_secret: str
     jwt_algorithm: str = 'HS256'
-    jwt_expiration_sec: int = 3600
+    jwt_expiration_sec: int = 24 * 60 * 60
 
 
 settings = Settings(_env_file='.env', _env_file_encoding='utf-8')
