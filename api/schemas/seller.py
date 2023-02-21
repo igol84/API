@@ -46,3 +46,4 @@ class SellerWithDeletable(BaseModel):
     active: bool
     email: Optional[str]
     role: Optional[str]
+    sales: int
