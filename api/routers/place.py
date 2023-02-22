@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, Response
 
 from .. import crud
-from .. schemas import place as schemas
+from ..schemas import place as schemas
 from ..auth2 import RoleChecker
 
 allow_create_resource = RoleChecker(["admin"])
@@ -16,6 +16,11 @@ def create(request: schemas.CreatePlace, crud_place: crud.Place = Depends()):
 @router.get('/', response_model=list[schemas.Place])
 def get_all(skip: int = None, limit: int = None, search: str = None, crud_place: crud.Place = Depends()):
     return crud_place.get_all(skip, limit, search)
+
+
+@router.get('/deletable', response_model=list[schemas.PlaceWithDeletable])
+def get_all_deletable(store_id: int, crud_place: crud.Place = Depends()):
+    return crud_place.get_all_deletable(store_id)
 
 
 @router.get('/{place_id}', status_code=200, response_model=schemas.Place)

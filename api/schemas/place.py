@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -42,3 +44,11 @@ class EditPlaceName(BaseModel):
 class EditPlaceActive(BaseModel):
     place_id: int
     active: bool
+
+class PlaceWithDeletable(BaseModel):
+    store_id: int
+    id: int
+    name: str
+    active: bool
+    sales: int
+    expenses: int

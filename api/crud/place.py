@@ -1,3 +1,5 @@
+from sqlalchemy import func
+
 from .. import tables
 from ..schemas import place as schemas
 from .base import CRUDBase
@@ -27,3 +29,13 @@ class Place(CRUDBase[tables.Place, schemas.CreatePlace, schemas.BasePlace]):
         if edited:
             self.db.commit()
         return place_row
+
+    def get_all_deletable(self, store_id: int) -> list[schemas.PlaceWithDeletable]:
+        db_obj = self.db.query(self.table.id, self.table.store_id, self.table.name, self.table.active,
+                               func.count(tables.Sale.place_id).label("sales"),
+                               func.count(tables.Expense.place_id).label("expenses")) \
+            .where(self.table.store_id == store_id) \
+            .join(tables.Sale, self.table.id == tables.Sale.place_id, isouter=True) \
+            .join(tables.Expense, self.table.id == tables.Expense.place_id, isouter=True) \
+            .group_by(self.table.id)
+        return db_obj.all()
