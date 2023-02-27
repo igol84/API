@@ -17,7 +17,7 @@ def get_all(skip: int = None, limit: int = None, search: str = None, crud_expens
     return crud_expense.get_all(skip, limit, search)
 
 
-@router.get('/{store_id}', response_model=list[schemas.Expense])
+@router.get('/get_by_store_id/{store_id}', response_model=list[schemas.Expense])
 def get_by_store_id(store_id: int, crud_expense: crud.Expense = Depends()):
     return crud_expense.get_by_store_id(store_id)
 
