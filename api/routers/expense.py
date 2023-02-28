@@ -17,14 +17,14 @@ def get_all(skip: int = None, limit: int = None, search: str = None, crud_expens
     return crud_expense.get_all(skip, limit, search)
 
 
-@router.get('/get_by_store_id/{store_id}', response_model=list[schemas.Expense])
-def get_by_store_id(store_id: int, crud_expense: crud.Expense = Depends()):
-    return crud_expense.get_by_store_id(store_id)
-
-
 @router.get('/{expense_id}', status_code=200, response_model=schemas.Expense)
 def show(expense_id: int, crud_expense: crud.Expense = Depends()):
     return crud_expense.get(expense_id)
+
+
+@router.get('/get_by_store_id/{store_id}', response_model=list[schemas.Expense])
+def get_by_store_id(store_id: int, crud_expense: crud.Expense = Depends()):
+    return crud_expense.get_by_store_id(store_id)
 
 
 @router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Expense)

@@ -1,4 +1,6 @@
+from fastapi import HTTPException
 from sqlalchemy import func
+from starlette import status
 
 from .. import tables
 from ..schemas import place as schemas
@@ -7,6 +9,14 @@ from .base import CRUDBase
 
 class Place(CRUDBase[tables.Place, schemas.CreatePlace, schemas.BasePlace]):
     table = tables.Place
+
+    def get_by_store_id(self, store_id: int, skip: int = 0, limit: int = None) -> list[tables.Place]:
+        EVEN = slice(skip, skip + limit) if limit else slice(skip, None)
+        db_obj = self.db.query(self.table).where(self.table.store_id == store_id)
+        if not db_obj.first():
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f'{self.table.__name__} not contain \'{store_id}\' store_id')
+        return db_obj[EVEN]
 
     def edit_name(self, data: schemas.EditPlaceName):
         place = self.db.query(tables.Place).filter(tables.Place.id == data.place_id)

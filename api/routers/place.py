@@ -23,6 +23,10 @@ def get_all_deletable(store_id: int, crud_place: crud.Place = Depends()):
     return crud_place.get_all_deletable(store_id)
 
 
+@router.get('/get_by_store_id/{store_id}', response_model=list[schemas.Place])
+def get_by_store_id(store_id: int, crud_place: crud.Place = Depends()):
+    return crud_place.get_by_store_id(store_id)
+
 @router.get('/{place_id}', status_code=200, response_model=schemas.Place)
 def show(place_id: int, crud_place: crud.Place = Depends()):
     return crud_place.get(place_id)
