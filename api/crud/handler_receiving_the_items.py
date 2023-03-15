@@ -33,7 +33,7 @@ class HeaderReceivingTheItems:
                 # create new product and item
                 # check product available by name
                 product = self.db.query(tables.Product).filter(
-                    tables.Product.name == data.name,
+                    tables.Product.name.ilike(data.name),
                     tables.Product.type == data.type.name).first()
                 if not product:
                     pd_product = CreateProduct(type=data.type.name, name=data.name, price=data.price_sell)
@@ -58,8 +58,8 @@ class HeaderReceivingTheItems:
                 tables.ProductCatalog.store_id == data.store_id,
                 tables.ProductCatalog.prod_id == tables.Product.id,
                 tables.Product.id == tables.Shoes.id,
-                tables.Product.name == data.name,
-                tables.Shoes.color == data.module.color,
+                tables.Product.name.ilike(data.name),
+                tables.Shoes.color.ilike(data.module.color),
                 tables.Shoes.width == data.module.width).all()
             db_sizes = {(shoes.size, shoes.length): {'id': product.id} for pc, product, shoes in products}
 
