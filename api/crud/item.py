@@ -13,3 +13,10 @@ class Item(CRUDBase[tables.Item, schemas.CreateItem, schemas.UpdateItem]):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                 detail=f'{self.table.__name__} not contain \'{prod_id}\' prod_id')
         return db_obj[EVEN]
+
+    def get_items_by_store_id(self, store_id: int) -> list[tables.Product]:
+        db_obj = self.db.query(self.table).where(self.table.store_id == store_id)
+        if not db_obj.first():
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f'{self.table.__name__} not contain \'{store_id}\' store_id')
+        return db_obj.all()

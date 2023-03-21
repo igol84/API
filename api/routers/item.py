@@ -23,8 +23,13 @@ def show(item_id: int, crud_item: crud.Item = Depends()):
 
 
 @router.get('/by_prod_id/{prod_id}', status_code=200, response_model=list[schemas.ShowItemWithProduct])
-def get_all_by_user_id(prod_id: int, skip: int = None, limit: int = None, crud_item: crud.Item = Depends()):
+def get_items_by_product_id(prod_id: int, skip: int = None, limit: int = None, crud_item: crud.Item = Depends()):
     return crud_item.get_by_product_id(prod_id, skip, limit)
+
+
+@router.get('/by_store_id/{store_id}', status_code=200, response_model=list[schemas.ShowItemWithProduct])
+def get_items_by_store_id(store_id: int, crud_item: crud.Item = Depends()):
+    return crud_item.get_items_by_store_id(store_id)
 
 
 @router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowItemWithProduct)

@@ -20,5 +20,5 @@ def del_item(item_id: int, crud_handler: crud.HandlerItemEditor = Depends()):
 
 
 @router.get('/get_item_sales/{item_id}', status_code=status.HTTP_202_ACCEPTED, response_model=list[schemas.SaleDetail])
-def del_item(item_id: int, crud_handler: crud.HandlerItemEditor = Depends()):
+def get_item_sales(item_id: int, crud_handler: crud.HandlerItemEditor = Depends()):
     return crud_handler.get_item_sales(item_id)
