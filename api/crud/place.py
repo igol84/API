@@ -10,6 +10,20 @@ from .base import CRUDBase
 class Place(CRUDBase[tables.Place, schemas.CreatePlace, schemas.BasePlace]):
     table = tables.Place
 
+    def get_all(self, skip: int = 0, limit: int = None, store_id: int = None) -> list[table]:
+        if limit:
+            if skip:
+                SLICE = slice(skip, skip + limit)
+            else:
+                SLICE = slice(skip, limit)
+        else:
+            SLICE = slice(skip, None)
+        db_obj = self.db.query(self.table)
+        if store_id:
+            db_obj = db_obj.where(self.table.store_id == store_id)
+
+        return db_obj[SLICE]
+
     def get_by_store_id(self, store_id: int, skip: int = 0, limit: int = None) -> list[tables.Place]:
         EVEN = slice(skip, skip + limit) if limit else slice(skip, None)
         db_obj = self.db.query(self.table).where(self.table.store_id == store_id)

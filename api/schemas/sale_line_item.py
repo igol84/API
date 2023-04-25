@@ -11,8 +11,10 @@ class CreateSaleLineItem(BaseSaleLineItem):
     item_id: int
     sale_price: float
 
+
 class UpdateSaleLineItem(CreateSaleLineItem):
     pass
+
 
 class CreateSaleLineItemForSale(BaseSaleLineItem):
     item_id: int

@@ -13,8 +13,9 @@ def create(request: schemas.CreateItem, crud_item: crud.Item = Depends()):
 
 
 @router.get('/', response_model=list[schemas.ShowItemWithProduct])
-def get_all(skip: int = None, limit: int = None, search: str = None, crud_item: crud.Item = Depends()):
-    return crud_item.get_all(skip, limit, search)
+def get_all(skip: int = None, limit: int = None, store_id: int = None, prod_id: int = None,
+            crud_item: crud.Item = Depends()):
+    return crud_item.get_all(skip, limit, store_id, prod_id)
 
 
 @router.get('/{item_id}', status_code=200, response_model=schemas.ShowItemWithProduct)

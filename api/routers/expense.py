@@ -13,8 +13,8 @@ def create(request: schemas.CreateExpense, crud_expense: crud.Expense = Depends(
 
 
 @router.get('/', response_model=list[schemas.Expense])
-def get_all(skip: int = None, limit: int = None, search: str = None, crud_expense: crud.Expense = Depends()):
-    return crud_expense.get_all(skip, limit, search)
+def get_all(skip: int = None, limit: int = None, store_id: int = None, crud_expense: crud.Expense = Depends()):
+    return crud_expense.get_all(skip, limit, store_id)
 
 
 @router.get('/{expense_id}', status_code=200, response_model=schemas.Expense)

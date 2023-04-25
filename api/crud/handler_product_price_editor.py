@@ -1,5 +1,6 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from .. import database
 from .. import tables
@@ -49,21 +50,26 @@ class HandlerProductPriceEditor:
     def edit_shoes(self, shoes_form: schemas.ModelShoesForm) -> schemas.ModelShoesForm:
         if shoes_form.name != shoes_form.new_name or shoes_form.price_for_sale is not None:
             update_data = {}
-            products = self.db.query(tables.Product).filter(tables.Product.name == shoes_form.name)
+            query = self.db.query(tables.Product).filter(
+                func.lower(tables.Product.name) == func.lower(shoes_form.name))
+            ids = [product.id for product in query]
+
             if shoes_form.name != shoes_form.new_name:
                 update_data['name'] = shoes_form.new_name
             if shoes_form.price_for_sale is not None:
                 update_data['price'] = shoes_form.price_for_sale
+            products = self.db.query(tables.Product).filter(tables.Product.id.in_(ids))
             products.update(update_data)
             self.db.commit()
+
         return schemas.ModelShoesForm(name=shoes_form.name, new_name=shoes_form.new_name,
                                       price_for_sale=shoes_form.price_for_sale)
 
     def edit_color(self, color_form: schemas.ModelColorForm) -> None:
         if color_form.color != color_form.new_color or color_form.price_for_sale is not None:
-            query = self.db.query(tables.Product, tables.Shoes).\
-                filter(tables.Product.id == tables.Shoes.id).\
-                filter(tables.Product.name == color_form.name).\
+            query = self.db.query(tables.Product, tables.Shoes). \
+                filter(tables.Product.id == tables.Shoes.id). \
+                filter(func.lower(tables.Product.name) == func.lower(color_form.name)). \
                 filter(tables.Shoes.color == color_form.color)
             ids = [product.id for product, shoes_color in query]
 

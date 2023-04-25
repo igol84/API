@@ -7,6 +7,20 @@ from sqlalchemy import func
 class Seller(CRUDBase[tables.Seller, schemas.CreateSeller, schemas.BaseSeller]):
     table = tables.Seller
 
+    def get_all(self, skip: int = 0, limit: int = None, store_id: int = None) -> list[table]:
+        if limit:
+            if skip:
+                SLICE = slice(skip, skip + limit)
+            else:
+                SLICE = slice(skip, limit)
+        else:
+            SLICE = slice(skip, None)
+        db_obj = self.db.query(self.table)
+        if store_id:
+            db_obj = db_obj.where(self.table.store_id == store_id)
+
+        return db_obj[SLICE]
+
     def edit_name(self, data: schemas.EditSellerName):
         seller = self.db.query(tables.Seller).filter(tables.Seller.id == data.seller_id)
         seller_row = seller.first()

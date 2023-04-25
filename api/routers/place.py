@@ -14,8 +14,8 @@ def create(request: schemas.CreatePlace, crud_place: crud.Place = Depends()):
 
 
 @router.get('/', response_model=list[schemas.Place])
-def get_all(skip: int = None, limit: int = None, search: str = None, crud_place: crud.Place = Depends()):
-    return crud_place.get_all(skip, limit, search)
+def get_all(skip: int = None, limit: int = None, store_id: int = None, crud_place: crud.Place = Depends()):
+    return crud_place.get_all(skip, limit, store_id)
 
 
 @router.get('/deletable', response_model=list[schemas.PlaceWithDeletable])

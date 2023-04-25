@@ -14,8 +14,8 @@ def create(request: schemas.CreateSeller, crud_seller: crud.Seller = Depends()):
 
 
 @router.get('/', response_model=list[schemas.Seller])
-def get_all(skip: int = None, limit: int = None, search: str = None, crud_seller: crud.Seller = Depends()):
-    return crud_seller.get_all(skip, limit, search)
+def get_all(skip: int = None, limit: int = None, store_id: int = None, crud_seller: crud.Seller = Depends()):
+    return crud_seller.get_all(skip, limit, store_id)
 
 
 @router.get('/deletable', response_model=list[schemas.SellerWithDeletable])
