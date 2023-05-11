@@ -21,3 +21,4 @@ def edit_sli_price(request: schemas.EditSLIPrice, handler_sale_registration: cru
 @router.put('/put_item_from_old_sale', status_code=status.HTTP_202_ACCEPTED)
 def put_item_to_old_sale(request: schemas.PutItemToOldSale, handler: crud.HeaderSaleRegistration = Depends()):
     handler.put_items_from_old_sale(request)
+
