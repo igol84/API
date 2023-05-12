@@ -10,6 +10,7 @@ add_user_if_empty()
 
 app = FastAPI(ssl_keyfile="./ssl/private.key", ssl_certfile="./ssl/certificate.crt")
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
