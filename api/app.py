@@ -8,7 +8,7 @@ from .routers import router
 tables.Base.metadata.create_all(bind=engine)
 add_user_if_empty()
 
-app = FastAPI(ssl_keyfile="./ssl/private.key", ssl_certfile="./ssl/certificate.crt")
+app = FastAPI()
 
 
 app.add_middleware(
