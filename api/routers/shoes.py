@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, status, Response
 
 from .. import crud
-from .. schemas import shoes as schemas
+from ..schemas import shoes as schemas
 from ..auth2 import get_current_user
 
-
-router = APIRouter(tags=['Shoes'], prefix='/shoes', dependencies=[Depends(get_current_user)])#
+router = APIRouter(tags=['Shoes'], prefix='/shoes', dependencies=[Depends(get_current_user)])  #
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Shoes)
@@ -23,13 +22,8 @@ def show(shoes_id: int, crud_shoes: crud.Shoes = Depends()):
     return crud_shoes.get(shoes_id)
 
 
-@router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Shoes)
-def update(request: schemas.UpdateShoes, crud_shoes: crud.Shoes = Depends()):
-    return crud_shoes.update(request)
-
-
 @router.delete('/{shoes_id}')
-def delete(shoes_id: int, crud_shoes: crud.Shoes = Depends(),  crud_prod: crud.Product = Depends()):
+def delete(shoes_id: int, crud_shoes: crud.Shoes = Depends(), crud_prod: crud.Product = Depends()):
     crud_shoes.delete(shoes_id)
     if crud_prod.is_id_exist(shoes_id):
         crud_prod.delete(shoes_id)

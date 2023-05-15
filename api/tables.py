@@ -118,3 +118,14 @@ class ProductCatalog(Base):
     store_id = Column(Integer, ForeignKey('stores.id'), primary_key=True, index=True)
     prod_id = Column(Integer, ForeignKey('products.id'), primary_key=True, index=True)
     product = relationship('Product', back_populates='product_catalogs')
+
+
+class Showcase(Base):
+    __tablename__ = "showcase"
+
+    id = Column(Integer, ForeignKey('products.id'), primary_key=True, index=True, unique=True)
+    title = Column(String)
+    desc = Column(String)
+    url = Column(String)
+    youtube = Column(String)
+    active = Column(Boolean)

@@ -11,11 +11,8 @@ class BaseShoes(BaseModel):
     width: Optional[str]
 
 
-class UpdateShoes(BaseModel):
-    color: Optional[str]
-    size: float
-    length: Optional[float]
-    width: Optional[str]
+class UpdateShoes(BaseShoes):
+    pass
 
 
 class CreateShoes(BaseShoes):
