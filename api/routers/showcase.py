@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, status, Response
 
 from .. import crud
-from .. schemas import showcase as schemas
+from ..schemas import showcase as schemas
 from ..auth2 import get_current_user
 
-
-router = APIRouter(tags=['Showcase'], prefix='/showcase', dependencies=[Depends(get_current_user)])#
+router = APIRouter(tags=['Showcase'], prefix='/showcase', dependencies=[Depends(get_current_user)])  #
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Showcase)
