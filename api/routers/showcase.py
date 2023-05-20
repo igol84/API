@@ -17,9 +17,9 @@ def get_all(skip: int = None, limit: int = None, search: str = None, crud_showca
     return crud_showcase.get_all(skip, limit, search)
 
 
-@router.get('/{prod_id}', status_code=200, response_model=schemas.Showcase)
-def show(prod_id: int, crud_showcase: crud.Showcase = Depends()):
-    return crud_showcase.get(prod_id)
+@router.get('/{name}', status_code=200, response_model=schemas.Showcase)
+def show(name: str, crud_showcase: crud.Showcase = Depends()):
+    return crud_showcase.get(name)
 
 
 @router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Showcase)
@@ -27,7 +27,7 @@ def update(request: schemas.UpdateShowcase, crud_showcase: crud.Showcase = Depen
     return crud_showcase.update(request)
 
 
-@router.delete('/{prod_id}')
-def delete(prod_id: int, crud_showcase: crud.Showcase = Depends()):
-    crud_showcase.delete(prod_id)
+@router.delete('/{name}')
+def delete(name: str, crud_showcase: crud.Showcase = Depends()):
+    crud_showcase.delete(name)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
