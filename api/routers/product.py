@@ -34,12 +34,10 @@ def update(request: schemas.UpdateProduct, crud_prod: crud.Product = Depends()):
 
 
 @router.delete('/{prod_id}', dependencies=[Depends(allow_create_resource)])
-def delete(prod_id: int, crud_prod: crud.Product = Depends(), crud_shoes: crud.Shoes = Depends(), crud_showcase: crud.Showcase = Depends()):
+def delete(prod_id: int, crud_prod: crud.Product = Depends(), crud_shoes: crud.Shoes = Depends()):
     product: schemas.Product = crud_prod.get(prod_id)
     if product.type == 'shoes':
         if crud_shoes.is_id_exist(prod_id):
             crud_shoes.delete(prod_id)
     crud_prod.delete(prod_id)
-    if crud_showcase.is_id_exist(prod_id):
-        crud_showcase.delete(prod_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

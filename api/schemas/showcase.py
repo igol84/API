@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class BaseShowcase(BaseModel):
-    id: int
     title: Optional[str]
     desc: Optional[str]
     url: str
@@ -13,7 +12,7 @@ class BaseShowcase(BaseModel):
 
 
 class UpdateShowcase(BaseShowcase):
-    pass
+    id: int
 
 
 class CreateShowcase(BaseShowcase):
@@ -21,7 +20,7 @@ class CreateShowcase(BaseShowcase):
 
 
 class Showcase(BaseShowcase):
-    pass
+    id: int
 
     class Config:
         orm_mode = True

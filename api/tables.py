@@ -120,12 +120,11 @@ class ProductCatalog(Base):
     product = relationship('Product', back_populates='product_catalogs')
 
 
-class Showcase(Base):
-    __tablename__ = "showcase"
-
-    id = Column(Integer, ForeignKey('products.id'), primary_key=True, index=True, unique=True)
-    title = Column(String)
-    desc = Column(String)
-    url = Column(String)
-    youtube = Column(String)
-    active = Column(Boolean)
+# class Showcase(Base):
+#     __tablename__ = "showcase"
+#     name = Column(String, primary_key=True, index=True, unique=True)
+#     title = Column(String)
+#     desc = Column(String)
+#     url = Column(String)
+#     youtube = Column(String)
+#     active = Column(Boolean)
