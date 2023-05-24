@@ -1,5 +1,9 @@
 import ftplib
 
+from fastapi import UploadFile
+
+from .settings import settings
+
 
 def chdir(directory, ftp):
     if directory_exists(directory, ftp) is False:  # (or negate, whatever you prefer for readability)
@@ -17,8 +21,36 @@ def directory_exists(directory, ftp):
     return False
 
 
+def file_exists(file_name, ftp):
+    filelist = []
+    ftp.retrlines('NLST', filelist.append)
+    for file in filelist:
+        print(file)
+        if file == file_name:
+            return True
+    return False
+
+
 def save_file(directory: str, file: bytes, file_name: str):
-    ftp = ftplib.FTP('ftp.sweetshoes.com.ua', 'pictures@sweetshoes.com.ua', '[cf^SMFN%%x]')
+    ftp = ftplib.FTP(settings.ftp_host, settings.ftp_user, settings.ftp_pass)
     chdir(directory, ftp)
     ftp.storbinary('STOR ' + file_name, file)
+    ftp.quit()
+
+
+def save_files(directory: str, files: list[UploadFile]):
+    ftp = ftplib.FTP(settings.ftp_host, settings.ftp_user, settings.ftp_pass)
+    chdir(directory, ftp)
+    for file in files:
+        ftp.storbinary('STOR ' + file.filename, file.file)
+    ftp.quit()
+
+
+def del_dir(directory: str):
+    ftp = ftplib.FTP(settings.ftp_host, settings.ftp_user, settings.ftp_pass)
+    if directory_exists(directory, ftp):
+        names = ftp.nlst(directory)
+        for name in names:
+            ftp.delete(name)
+        ftp.rmd(directory)
     ftp.quit()
