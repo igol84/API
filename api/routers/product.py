@@ -15,14 +15,12 @@ def create(request: schemas.CreateProduct, crud_prod: crud.Product = Depends()):
     return crud_prod.create(request)
 
 
-@router.get('/', response_model=list[schemas.Product],
-            dependencies=[Depends(allow_read_resource)])
+@router.get('/', response_model=list[schemas.Product], dependencies=[Depends(allow_read_resource)])
 def get_all(skip: int = None, limit: int = None, search: str = None, crud_product: crud.Product = Depends()):
     return crud_product.get_all(skip, limit, search)
 
 
-@router.get('/{prod_id}', status_code=200, response_model=schemas.Product,
-            dependencies=[Depends(allow_read_resource)])
+@router.get('/{prod_id}', status_code=200, response_model=schemas.Product, dependencies=[Depends(allow_read_resource)])
 def show(prod_id: int, crud_prod: crud.Product = Depends()):
     return crud_prod.get(prod_id)
 

@@ -21,6 +21,10 @@ class CreateShowcase(BaseShowcase):
 
 
 class Showcase(BaseShowcase):
-
     class Config:
         orm_mode = True
+
+
+class ShowcaseDirs(BaseModel):
+    name: str
+    images: list[str]
