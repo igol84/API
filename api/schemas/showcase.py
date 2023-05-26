@@ -28,3 +28,9 @@ class Showcase(BaseShowcase):
 class ShowcaseDirs(BaseModel):
     name: str
     images: list[str]
+
+
+class DelImgShowcase(BaseModel):
+    nameItem: str
+    dirName: str
+    imgName: str
