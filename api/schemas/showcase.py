@@ -6,7 +6,9 @@ from pydantic import BaseModel
 class BaseShowcase(BaseModel):
     name: str
     title: Optional[str]
+    title_ua: Optional[str]
     desc: Optional[str]
+    desc_ua: Optional[str]
     url: str
     youtube: Optional[str]
     active: bool

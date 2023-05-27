@@ -124,7 +124,9 @@ class Showcase(Base):
     __tablename__ = "showcase"
     name = Column(String, primary_key=True, index=True, unique=True)
     title = Column(String)
+    title_ua = Column(String)
     desc = Column(String)
+    desc_ua = Column(String)
     url = Column(String)
     youtube = Column(String)
     active = Column(Boolean)
