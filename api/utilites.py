@@ -1,8 +1,5 @@
-import ftplib
-
 from fastapi import UploadFile
 
-from .settings import settings
 
 
 def chdir(directory, ftp):
@@ -31,26 +28,20 @@ def file_exists(file_name, ftp):
     return False
 
 
-def save_file(directory: str, file: bytes, file_name: str):
-    ftp = ftplib.FTP(settings.ftp_host, settings.ftp_user, settings.ftp_pass)
+def save_file(directory: str, file: bytes, file_name: str, ftp):
     chdir(directory, ftp)
     ftp.storbinary('STOR ' + file_name, file)
-    ftp.quit()
 
 
-def save_files(directory: str, files: list[UploadFile]):
-    ftp = ftplib.FTP(settings.ftp_host, settings.ftp_user, settings.ftp_pass)
+def save_files(directory: str, files: list[UploadFile], ftp):
     chdir(directory, ftp)
     for file in files:
         ftp.storbinary('STOR ' + file.filename, file.file)
-    ftp.quit()
 
 
-def del_dir(directory: str):
-    ftp = ftplib.FTP(settings.ftp_host, settings.ftp_user, settings.ftp_pass)
+def del_dir(directory: str, ftp):
     if directory_exists(directory, ftp):
         names = ftp.nlst(directory)
         for name in names:
             ftp.delete(name)
         ftp.rmd(directory)
-    ftp.quit()

@@ -3,7 +3,6 @@ from fastapi import APIRouter, Depends, status, Response, UploadFile
 from .. import crud
 from ..schemas import showcase as schemas
 from ..auth2 import RoleChecker
-from ..utilites import save_files, del_dir
 
 allow_create_resource = RoleChecker(["admin"])
 router = APIRouter(tags=['Showcase'], prefix='/showcase', dependencies=[Depends(allow_create_resource)])
@@ -47,12 +46,12 @@ def delete(name: str, crud_showcase: crud.Showcase = Depends()):
 
 
 @router.post("/files/{directory}", status_code=status.HTTP_201_CREATED)
-def create_file(directory: str, files: list[UploadFile]):
-    save_files(directory=directory, files=files)
+def create_file(directory: str, files: list[UploadFile], crud_showcase: crud.Showcase = Depends()):
+    crud_showcase.save_images(directory=directory, files=files)
     return {"file_save": 'ok'}
 
 
 @router.delete("/dir/{directory}")
-def delete_directory(directory: str):
-    del_dir(directory=directory)
+def delete_directory(directory: str, crud_showcase: crud.Showcase = Depends()):
+    crud_showcase.del_dir_showcase(directory=directory)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

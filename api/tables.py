@@ -130,3 +130,16 @@ class Showcase(Base):
     url = Column(String)
     youtube = Column(String)
     active = Column(Boolean)
+
+
+class Brand(Base):
+    __tablename__ = "brand"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    title = Column(String)
+    title_ua = Column(String)
+    desc = Column(String)
+    desc_ua = Column(String)
+    url = Column(String)
+    active = Column(Boolean)

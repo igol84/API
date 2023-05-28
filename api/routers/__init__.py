@@ -17,6 +17,7 @@ from .handler_receiving_the_items import router as handler_receiving_the_items_r
 from .handler_product_price_editor import router as handler_product_price_editor_router
 from .handler_items_editor import router as handler_handler_items_editor
 from .showcase import router as showcase_router
+from .brand import router as brand_router
 
 router = APIRouter()
 router.include_router(auth_router)
@@ -36,3 +37,4 @@ router.include_router(handler_receiving_the_items_router)
 router.include_router(handler_product_price_editor_router)
 router.include_router(handler_handler_items_editor)
 router.include_router(showcase_router)
+router.include_router(brand_router)

@@ -11,8 +11,12 @@ class Settings(BaseSettings):
     jwt_expiration_sec: int = 24 * 60 * 60
 
     ftp_host: str
-    ftp_user: str
-    ftp_pass: str
+
+    ftp_products_user: str
+    ftp_products_pass: str
+
+    ftp_brands_user: str
+    ftp_brands_pass: str
 
 
 settings = Settings(_env_file='.env', _env_file_encoding='utf-8')
