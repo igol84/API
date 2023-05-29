@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class BaseShoes(BaseModel):
-    id: int
     color: Optional[str]
     size: float
     length: Optional[float]
@@ -24,7 +23,7 @@ class CreateShoesWithProduct(UpdateShoes):
 
 
 class Shoes(BaseShoes):
-    pass
+    id: int
 
     class Config:
         orm_mode = True
