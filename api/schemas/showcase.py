@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 class BaseShowcase(BaseModel):
     name: str
+    brand_id: Optional[int]
     title: Optional[str]
     title_ua: Optional[str]
     desc: Optional[str]
