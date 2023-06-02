@@ -25,6 +25,11 @@ def show(prod_id: int, crud_prod: crud.Product = Depends()):
     return crud_prod.get(prod_id)
 
 
+@router.get('/colors_by_prod_name/{prod_name}', status_code=200, response_model=list[str])
+def get_colors_by_product_id(prod_name: str, crud_prod: crud.Product = Depends()):
+    return crud_prod.get_by_product_name(prod_name)
+
+
 @router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Product,
             dependencies=[Depends(allow_create_resource)])
 def update(request: schemas.UpdateProduct, crud_prod: crud.Product = Depends()):
