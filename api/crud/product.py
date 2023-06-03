@@ -47,15 +47,3 @@ class Product(CRUDBase[tables.Product, schemas.CreateProduct, schemas.BaseProduc
         self.db.commit()
         return product_db_row.first()
 
-    def get_by_product_name(self, name: str) -> list[str]:
-        db_obj = self.db.query(tables.Product).filter(
-            tables.Product.name == name
-        )
-        colors = set()
-        for row in db_obj.all():
-            if row.shoes:
-                colors.add(row.shoes.color)
-        if not db_obj.first():
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f'{self.table.__name__} not contain \'{name}\' prod_name')
-        return [*colors]
