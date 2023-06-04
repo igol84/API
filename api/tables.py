@@ -122,8 +122,8 @@ class ProductCatalog(Base):
 
 class Showcase(Base):
     __tablename__ = "showcase"
-    name = Column(String, primary_key=True, index=True, unique=True)
-    color = Column(String)
+    name = Column(String, primary_key=True, index=True)
+    color = Column(String, primary_key=True, index=True, nullable=False)
     brand_id = Column(Integer)
     title = Column(String)
     title_ua = Column(String)

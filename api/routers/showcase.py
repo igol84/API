@@ -39,9 +39,9 @@ def delete_directory(request: schemas.DelImgShowcase, crud_showcase: crud.Showca
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.delete('/{name}')
-def delete(name: str, crud_showcase: crud.Showcase = Depends()):
-    crud_showcase.delete(name)
+@router.delete('/name={name}/color={color}')
+def delete(name: str, color: str, crud_showcase: crud.Showcase = Depends()):
+    crud_showcase.delete(name, color)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 

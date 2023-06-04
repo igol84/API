@@ -11,7 +11,7 @@ from ..utilites import directory_exists, save_files, del_dir
 
 class Showcase(CRUDBase[tables.Showcase, schemas.CreateShowcase, schemas.BaseShowcase]):
     table = tables.Showcase
-    keys = ['name']
+    keys = ['name', 'color']
     autoincrement = False
 
     @staticmethod
