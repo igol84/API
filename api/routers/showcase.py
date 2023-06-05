@@ -34,7 +34,7 @@ def update(request: schemas.UpdateShowcase, crud_showcase: crud.Showcase = Depen
 
 
 @router.delete("/img")
-def delete_directory(request: schemas.DelImgShowcase, crud_showcase: crud.Showcase = Depends()):
+def delete_img(request: schemas.DelImgShowcase, crud_showcase: crud.Showcase = Depends()):
     crud_showcase.del_img(request)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 

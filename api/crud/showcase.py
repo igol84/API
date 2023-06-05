@@ -47,4 +47,4 @@ class Showcase(CRUDBase[tables.Showcase, schemas.CreateShowcase, schemas.BaseSho
             ftp.cwd(request.dirName)
             ftp.delete(request.imgName)
         ftp.quit()
-        return request.nameItem
+        return request.imgName

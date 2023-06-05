@@ -35,6 +35,5 @@ class ShowcaseDirs(BaseModel):
 
 
 class DelImgShowcase(BaseModel):
-    nameItem: str
     dirName: str
     imgName: str
