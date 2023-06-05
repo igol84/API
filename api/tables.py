@@ -120,7 +120,18 @@ class ProductCatalog(Base):
     product = relationship('Product', back_populates='product_catalogs')
 
 
-
+class Showcase(Base):
+    __tablename__ = "showcase"
+    name = Column(String, primary_key=True, index=True)
+    color = Column(String, primary_key=True, index=True)
+    brand_id = Column(Integer)
+    title = Column(String)
+    title_ua = Column(String)
+    desc = Column(String)
+    desc_ua = Column(String)
+    url = Column(String)
+    youtube = Column(String)
+    active = Column(Boolean)
 
 
 class Brand(Base):
