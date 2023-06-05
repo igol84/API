@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, status, Response, UploadFile
 from .. import crud
 from ..schemas import showcase as schemas
 from ..auth2 import RoleChecker
+from ..schemas.showcase import DelShowcase
 
 allow_create_resource = RoleChecker(["admin"])
 router = APIRouter(tags=['Showcase'], prefix='/showcase', dependencies=[Depends(allow_create_resource)])
@@ -39,9 +40,9 @@ def delete_img(request: schemas.DelImgShowcase, crud_showcase: crud.Showcase = D
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.delete('/name={name}/color={color}')
-def delete(name: str, color: str, crud_showcase: crud.Showcase = Depends()):
-    crud_showcase.delete(name, color)
+@router.post('/delete_showcase')
+def delete(request:  DelShowcase, crud_showcase: crud.Showcase = Depends()):
+    crud_showcase.delete(request.name, request.color)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 

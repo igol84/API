@@ -37,3 +37,8 @@ class ShowcaseDirs(BaseModel):
 class DelImgShowcase(BaseModel):
     dirName: str
     imgName: str
+
+
+class DelShowcase(BaseModel):
+    name: str
+    color: str
