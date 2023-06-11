@@ -122,8 +122,9 @@ class ProductCatalog(Base):
 
 class Showcase(Base):
     __tablename__ = "showcase"
-    name = Column(String, primary_key=True, index=True)
-    color = Column(String, primary_key=True, index=True)
+    key = Column(String, primary_key=True, index=True)
+    name = Column(String)
+    color = Column(String)
     brand_id = Column(Integer)
     title = Column(String)
     title_ua = Column(String)
@@ -132,6 +133,15 @@ class Showcase(Base):
     url = Column(String)
     youtube = Column(String)
     active = Column(Boolean)
+    prom_active = Column(Boolean)
+    images = relationship('ShowcaseImage', back_populates='showcase', cascade='all, delete')
+
+
+class ShowcaseImage(Base):
+    __tablename__ = "showcase_image"
+    dir = Column(String, ForeignKey('showcase.key'), primary_key=True, index=True)
+    image = Column(String, primary_key=True, index=True )
+    showcase = relationship('Showcase', back_populates='images')
 
 
 class Brand(Base):

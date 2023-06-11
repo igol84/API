@@ -18,5 +18,8 @@ class Settings(BaseSettings):
     ftp_brands_user: str
     ftp_brands_pass: str
 
+    ftp_xml_user: str
+    ftp_xml_pass: str
+
 
 settings = Settings(_env_file='.env', _env_file_encoding='utf-8')

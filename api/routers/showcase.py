@@ -3,7 +3,6 @@ from fastapi import APIRouter, Depends, status, Response, UploadFile
 from .. import crud
 from ..schemas import showcase as schemas
 from ..auth2 import RoleChecker
-from ..schemas.showcase import DelShowcase
 
 allow_create_resource = RoleChecker(["admin"])
 router = APIRouter(tags=['Showcase'], prefix='/showcase', dependencies=[Depends(allow_create_resource)])
@@ -31,18 +30,25 @@ def show(name: str, crud_showcase: crud.Showcase = Depends()):
 
 @router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Showcase)
 def update(request: schemas.UpdateShowcase, crud_showcase: crud.Showcase = Depends()):
+    print(request)
     return crud_showcase.update(request)
 
 
 @router.delete("/img")
-def delete_img(request: schemas.DelImgShowcase, crud_showcase: crud.Showcase = Depends()):
+def delete_img(request: schemas.ShowcaseImage, crud_showcase: crud.Showcase = Depends()):
     crud_showcase.del_img(request)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.post('/delete_showcase')
-def delete(request:  DelShowcase, crud_showcase: crud.Showcase = Depends()):
-    crud_showcase.delete(request.name, request.color)
+@router.delete("/dir/{directory}")
+def delete_directory(directory: str, crud_showcase: crud.Showcase = Depends()):
+    crud_showcase.del_dir_showcase(directory)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.delete('/{key}')
+def delete(key: str, crud_showcase: crud.Showcase = Depends()):
+    crud_showcase.delete(key)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
@@ -50,9 +56,3 @@ def delete(request:  DelShowcase, crud_showcase: crud.Showcase = Depends()):
 def create_file(directory: str, files: list[UploadFile], crud_showcase: crud.Showcase = Depends()):
     crud_showcase.save_images(directory=directory, files=files)
     return {"file_save": 'ok'}
-
-
-@router.delete("/dir/{directory}")
-def delete_directory(directory: str, crud_showcase: crud.Showcase = Depends()):
-    crud_showcase.del_dir_showcase(directory=directory)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)

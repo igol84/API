@@ -45,3 +45,23 @@ def del_dir(directory: str, ftp):
         for name in names:
             ftp.delete(name)
         ftp.rmd(directory)
+
+def translit(word: str) -> str:
+    ru = "А-а-Б-б-В-в-Ґ-ґ-Г-г-Д-д-Е-е-Ё-ё-Є-є-Ж-ж-З-з-И-и-І-і-Ї-ї-Й-й-К-к-Л-л-М-м-Н-н-О-о-П-п-Р-р-С-с-Т-т-У-у-Ф-ф-Х" \
+         "-х-Ц-ц-Ч-ч-Ш-ш-Щ-щ-Ъ-ъ-Ы-ы-Ь-ь-Э-э-Ю-ю-Я-я".split('-')
+    en = "A-a-B-b-V-v-G-g-G-g-D-d-E-e-E-e-E-e-ZH-zh-Z-z-I-i-I-i-I-i-J-j-K-k-L-l-M-m-N-n-O-o-P-p-R-r-S-s-T-t-U-u-F-" \
+         "f-H-h-TS-ts-CH-ch-SH-sh-SCH-sch-'-'-Y-y-'-'-E-e-YU-yu-YA-ya".split('-')
+    result: str = ''
+    for letter in word:
+        if letter in ru:
+            index = ru.index(letter)
+            result += en[index]
+        else:
+            result += letter
+    return result
+
+def create_url(value: str) -> str:
+    return translit(value.replace(' ', '-')).lower()
+
+if __name__ == '__main__':
+    print(create_url('теКст топ'))

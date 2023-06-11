@@ -3,7 +3,18 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+class BaseShowcaseImage(BaseModel):
+    dir: str
+    image: str
+
+
+class ShowcaseImage(BaseShowcaseImage):
+    class Config:
+        orm_mode = True
+
+
 class BaseShowcase(BaseModel):
+    key: str
     name: str
     color: str
     brand_id: Optional[int]
@@ -14,17 +25,20 @@ class BaseShowcase(BaseModel):
     url: str
     youtube: Optional[str]
     active: bool
-
-
-class UpdateShowcase(BaseShowcase):
-    pass
+    prom_active: bool
 
 
 class CreateShowcase(BaseShowcase):
+    images: list[BaseShowcaseImage] = []
+
+
+class UpdateShowcase(CreateShowcase):
     pass
 
 
 class Showcase(BaseShowcase):
+    images: list[ShowcaseImage] = []
+
     class Config:
         orm_mode = True
 
@@ -40,5 +54,4 @@ class DelImgShowcase(BaseModel):
 
 
 class DelShowcase(BaseModel):
-    name: str
-    color: str
+    pass
