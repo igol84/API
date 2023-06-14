@@ -1,3 +1,4 @@
+from datetime import datetime
 import ftplib
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
@@ -48,7 +49,7 @@ class Xml:
         brands_db = self.db.query(tables.Brand).all()
         showcase_db = self.db.query(tables.Showcase).filter(tables.Showcase.prom_active).all()
 
-        shop = ET.Element('shop')
+        shop = ET.Element('shop', date=datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
         categories = ET.SubElement(shop, 'categories')
         for brand_db in brands_db:
@@ -73,6 +74,7 @@ class Xml:
                     if size_qty:
                         length = f'{product.shoes.length: g}см.' if product.shoes.length else ''
                         sizes.append(Size(size=product.shoes.size, length=length, price=product.price))
+            sizes.sort(key=lambda size: size.size)
             max_price = max([size.price for size in sizes])
             price = round(int(max_price * PRICE_RATE), -1) + 10
             prepay = PREPAY if price > PREPAY else price
