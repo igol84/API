@@ -1,7 +1,6 @@
 from datetime import datetime
 import ftplib
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass
 from typing import Optional
 
 from fastapi import Depends
@@ -9,6 +8,7 @@ from sqlalchemy.orm import Session
 from .. import tables
 
 from .. import database
+from ..schemas.create_xml import Product, Size
 from ..settings import settings
 from ..schemas import brand as brand_schemas, showcase as showcase_schemas, product as product_schemas
 
@@ -18,27 +18,37 @@ MISSING_IMAGES = ['01', '02', '11', '12', '21', '22', '31', '32']
 PREPAY = 120
 
 
-@dataclass
-class Size:
-    size: float
-    length: str
-    price: float
-
-
-@dataclass
-class Product:
-    id: int
-    type: str
-    name: str
-    name_ua: str
-    category_id: int
-    price: float
-    images: list[str]
-    brand: Optional[str]
-    sizes: list[Size]
-    desc: str
-    desc_ua: str
-    youtube: Optional[str]
+def set_product(offers: ET.Element, item_id: int, product: Product, size: Optional[Size] = None):
+    offer = ET.SubElement(offers, 'offer', id=str(item_id), available="true", in_stock="На складі",
+                          group_id=str(product.id))
+    name = ET.SubElement(offer, 'name')
+    name.text = product.name
+    name_ua = ET.SubElement(offer, 'name_ua')
+    name_ua.text = product.name_ua
+    categoryId = ET.SubElement(offer, 'categoryId')
+    categoryId.text = str(product.category_id)
+    portal_category_id = ET.SubElement(offer, 'portal_category_id')
+    portal_category_id.text = '3220713'
+    price = ET.SubElement(offer, 'price')
+    price.text = str(product.price)
+    ET.SubElement(offer, 'oldprice')
+    currencyId = ET.SubElement(offer, 'currencyId')
+    currencyId.text = 'UAH'
+    for image in product.images:
+        picture = ET.SubElement(offer, 'picture')
+        picture.text = image
+    if product.brand:
+        vendor = ET.SubElement(offer, 'vendor')
+        vendor.text = product.brand
+    barcode = ET.SubElement(offer, 'barcode')
+    barcode.text = str(product.id)
+    description = ET.SubElement(offer, 'description')
+    description.text = product.desc
+    description_ua = ET.SubElement(offer, 'description_ua')
+    description_ua.text = product.desc_ua
+    if size:
+        param = ET.SubElement(offer, 'param', name='Розмір', unit='')
+        param.text = f'{size.size:g} - {size.length} устілка' if size.length else f'{size.size:g}'
 
 
 class Xml:
@@ -80,7 +90,7 @@ class Xml:
             prepay = PREPAY if price > PREPAY else price
             name_sizes = ', '.join([f'{size.size: g}' for size in sizes])
             if product_type == 'shoes':
-                name = f'{showcase_item.title_ua}. Размеры в наличии: {name_sizes}'
+                name = f'{showcase_item.title}. Размеры в наличии: {name_sizes}'
                 name_ua = f'{showcase_item.title_ua}. Розміри в наявності: {name_sizes}'
                 tr_sizes = ''.join([f'<tr><td>{size.size: g}</td> <td>{size.length}</td></tr>' for size in sizes])
                 youtube = \
@@ -107,7 +117,7 @@ class Xml:
                     f'</tbody></table><br/>' \
                     f'{youtube}'
             else:
-                name = f'{showcase_item.title_ua}.'
+                name = f'{showcase_item.title}.'
                 name_ua = f'{showcase_item.title_ua}.'
             images_db = self.db.query(tables.ShowcaseImage).filter(tables.ShowcaseImage.dir == showcase_item.key).all()
             images: list[str] = []
@@ -120,47 +130,24 @@ class Xml:
             if showcase_item.brand_id:
                 brand = self.db.query(tables.Brand).filter(tables.Brand.id == showcase_item.brand_id).first().name
 
-            if product_type == 'shoes' and sizes:
+            if (product_type == 'shoes' and sizes) or product_type != 'shoes':
                 products.append(Product(
-                    id=index, type=product_type, name=name_ua, name_ua=name, category_id=showcase_item.brand_id,
-                    price=price, images=images, brand=brand, sizes=sizes, desc=desc, desc_ua=desc_ua,
-                    youtube=showcase_item.youtube
-                ))
-            else:
-                products.append(Product(
-                    id=index, type=product_type, name=name_ua, name_ua=name, category_id=showcase_item.brand_id,
+                    id=index + 100, type=product_type, name=name, name_ua=name_ua, category_id=showcase_item.brand_id,
                     price=price, images=images, brand=brand, sizes=sizes, desc=desc, desc_ua=desc_ua,
                     youtube=showcase_item.youtube
                 ))
 
+        offers = ET.SubElement(shop, 'offers')
+        item_id = 10
+
         for product in products:
-            offers = ET.SubElement(shop, 'offers')
-            offer = ET.SubElement(offers, 'offer', id=str(product.id), available="true", in_stock="На складі")
-            name = ET.SubElement(offer, 'name')
-            name.text = product.name
-            name_ua = ET.SubElement(offer, 'name_ua')
-            name_ua.text = product.name_ua
-            categoryId = ET.SubElement(offer, 'categoryId')
-            categoryId.text = str(product.category_id)
-            portal_category_id = ET.SubElement(offer, 'portal_category_id')
-            portal_category_id.text = '3220713'
-            price = ET.SubElement(offer, 'price')
-            price.text = str(product.price)
-            ET.SubElement(offer, 'oldprice')
-            currencyId = ET.SubElement(offer, 'currencyId')
-            currencyId.text = 'UAH'
-            for image in product.images:
-                picture = ET.SubElement(offer, 'picture')
-                picture.text = image
-            if product.brand:
-                vendor = ET.SubElement(offer, 'vendor')
-                vendor.text = product.brand
-            barcode = ET.SubElement(offer, 'barcode')
-            barcode.text = str(product.id)
-            description = ET.SubElement(offer, 'description')
-            description.text = product.desc
-            description_ua = ET.SubElement(offer, 'description_ua')
-            description_ua.text = product.desc_ua
+            if product.type == 'shoes':
+                for size in product.sizes:
+                    item_id += 1
+                    set_product(offers=offers, item_id=item_id, product=product, size=size)
+            else:
+                item_id += 1
+                set_product(offers=offers, item_id=item_id, product=product)
 
         with open('catalog.xml', 'wb') as f:
             doc_type = '<?xml version="1.0" encoding="UTF-8"?>' \
