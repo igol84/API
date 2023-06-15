@@ -47,7 +47,7 @@ def set_product(offers: ET.Element, item_id: int, product: Product, size: Option
     description_ua = ET.SubElement(offer, 'description_ua')
     description_ua.text = product.desc_ua
     if size:
-        param = ET.SubElement(offer, 'param', name='Розмір', unit='')
+        param = ET.SubElement(offer, 'param', name='Розмір взуття', unit='')
         param.text = f'{size.size:g} - {size.length} устілка' if size.length else f'{size.size:g}'
 
 
