@@ -1,10 +1,11 @@
 import ftplib
 from fastapi import UploadFile
+
 from .. import tables
 from ..schemas import showcase as schemas
 from .base import CRUDBase
 from ..settings import settings
-from ..utilites import directory_exists, save_files, del_dir
+from ..utilites import directory_exists, save_files, del_dir, check_file_name_and_get_new_name
 
 
 class Showcase(CRUDBase[tables.Showcase, schemas.CreateShowcase, schemas.BaseShowcase]):
@@ -32,7 +33,7 @@ class Showcase(CRUDBase[tables.Showcase, schemas.CreateShowcase, schemas.BaseSho
         ftp.quit()
         image_rows = self.db.query(tables.ShowcaseImage).filter(tables.ShowcaseImage.dir == directory).all()
         files_exist = [row.image for row in image_rows]
-        operations = [tables.ShowcaseImage(dir=directory, image=file.filename)
+        operations = [tables.ShowcaseImage(dir=directory, image=check_file_name_and_get_new_name(file.filename))
                       for file in files if file.filename not in files_exist]
         self.db.add_all(operations)
         self.db.commit()

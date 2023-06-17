@@ -1,7 +1,6 @@
 from fastapi import UploadFile
 
 
-
 def chdir(directory, ftp):
     if directory_exists(directory, ftp) is False:  # (or negate, whatever you prefer for readability)
         ftp.mkd(directory)
@@ -36,7 +35,7 @@ def save_file(directory: str, file: bytes, file_name: str, ftp):
 def save_files(directory: str, files: list[UploadFile], ftp):
     chdir(directory, ftp)
     for file in files:
-        ftp.storbinary('STOR ' + file.filename, file.file)
+        ftp.storbinary('STOR ' + check_file_name_and_get_new_name(file.filename), file.file)
 
 
 def del_dir(directory: str, ftp):
@@ -45,6 +44,7 @@ def del_dir(directory: str, ftp):
         for name in names:
             ftp.delete(name)
         ftp.rmd(directory)
+
 
 def translit(word: str) -> str:
     ru = "А-а-Б-б-В-в-Ґ-ґ-Г-г-Д-д-Е-е-Ё-ё-Є-є-Ж-ж-З-з-И-и-І-і-Ї-ї-Й-й-К-к-Л-л-М-м-Н-н-О-о-П-п-Р-р-С-с-Т-т-У-у-Ф-ф-Х" \
@@ -60,8 +60,24 @@ def translit(word: str) -> str:
             result += letter
     return result
 
+
 def create_url(value: str) -> str:
     return translit(value.replace(' ', '-')).lower()
+
+
+def check_file_name_and_get_new_name(value):
+    names = {
+        'main.jpg': '02.jpg', 'main_b.jpg': '03.jpg', 'main_s.jpg': '01.jpg',
+        'bottom.jpg': '12.jpg', 'bottom_b.jpg': '13.jpg', 'bottom_s.jpg': '11.jpg',
+        'front.jpg': '22.jpg', 'front_b.jpg': '23.jpg', 'front_s.jpg': '21.jpg',
+        'back.jpg': '32.jpg', 'back_b.jpg': '33.jpg', 'back_s.jpg': '31.jpg',
+        'smal.jpg': '4.jpg', 'my.jpg': '5.jpg'
+    }
+    for name in names:
+        if value.endswith(name):
+            return names[name]
+    return value
+
 
 if __name__ == '__main__':
     print(create_url('теКст топ'))
