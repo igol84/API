@@ -73,11 +73,13 @@ class Xml:
             products_db = self.db.query(tables.Product).filter(tables.Product.name == showcase_item.name).all()
 
             sizes: list[Size] = []
+            prices: list[float] = []
             product_type, desc, desc_ua = '', '', ''
             for product_db in products_db:
                 product = product_schemas.Product(**product_db.__dict__)
                 product.shoes = product_schemas.Shoes(**product_db.shoes.__dict__) if product_db.shoes else None
                 product_type = product.type
+                prices.append(product.price)
                 if product.shoes and product.shoes.color == showcase_item.color:
                     items_db = self.db.query(tables.Item).filter(tables.Item.prod_id == product.id).all()
                     size_qty = sum([item_db.qty for item_db in items_db])
@@ -85,7 +87,7 @@ class Xml:
                         length = f'{product.shoes.length: g}см.' if product.shoes.length else ''
                         sizes.append(Size(size=product.shoes.size, length=length, price=product.price))
             sizes.sort(key=lambda size: size.size)
-            max_price = max([size.price for size in sizes])
+            max_price = max([size.price for size in sizes]) if sizes else max(prices)
             price = round(int(max_price * PRICE_RATE), -1) + 10
             prepay = PREPAY if price > PREPAY else price
             name_sizes = ', '.join([f'{size.size: g}' for size in sizes])
