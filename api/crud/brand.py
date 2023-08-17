@@ -1,5 +1,6 @@
 import ftplib
-
+import json
+from fastapi.encoders import jsonable_encoder
 from .. import tables
 from ..schemas import brand as schemas
 from ..settings import settings
@@ -15,6 +16,20 @@ class Brand(CRUDBase[tables.Brand, schemas.CreateBrand, schemas.BaseBrand]):
         showcase = self.db.query(tables.Showcase).filter(tables.Showcase.brand_id == del_brand_id)
         showcase.update({'brand_id': None})
         self.db.commit()
+
+    def save_json(self):
+        brands = self.get_all()
+        result = jsonable_encoder(brands)
+
+        with open("brands.json", "w", encoding='utf8') as file:
+            json.dump(result, file, ensure_ascii=False)
+        with open('brands.json', 'rb') as openfile:
+            print(openfile)
+            ftp = ftplib.FTP(settings.ftp_host, settings.ftp_xml_user, settings.ftp_xml_pass)
+            ftp.storbinary('STOR ' + 'brands.json', openfile)
+            ftp.quit()
+        return brands
+
 
     @staticmethod
     def get_images() -> list[str]:

@@ -18,6 +18,11 @@ def get_all(skip: int = None, limit: int = None, store_id: int = None, crud_bran
     return crud_brand.get_all(skip, limit, store_id)
 
 
+@router.get('/save-json', response_model=list[schemas.Brand])
+def save_json(crud_brand: crud.Brand = Depends()):
+    return crud_brand.save_json()
+
+
 @router.get('/images', response_model=list[str])
 def get_images(crud_brand: crud.Brand = Depends()):
     return crud_brand.get_images()
