@@ -1,17 +1,10 @@
-from fastapi import APIRouter, Depends, status, Response
-
+from fastapi import APIRouter, Depends
+from ..schemas import brand as schemas
 from .. import crud
 
-router = APIRouter(tags=['Json'], prefix='/json')  #
+router = APIRouter(tags=['Crate Json'], prefix='/crate-json')  #
 
 
-class XmlResponse(Response):
-    media_type = "application/xml"
-
-    def render(self, content: str) -> bytes:
-        return content.encode("utf-8")
-
-
-@router.get('/prom.xml', status_code=status.HTTP_201_CREATED)
-def create_xml(crud_xml: crud.Xml = Depends()):
-    return XmlResponse(crud_xml.create_xml())
+@router.get('')
+def save_json(crud_brand: crud.CreateJson = Depends()):
+    return crud_brand.create_json()

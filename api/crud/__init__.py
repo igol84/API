@@ -18,3 +18,4 @@ from .handler_items_editor import HandlerItemEditor
 from .showcase import Showcase
 from .brand import Brand
 from .create_xml import Xml
+from .create_json import CreateJson

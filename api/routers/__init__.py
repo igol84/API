@@ -19,6 +19,7 @@ from .handler_items_editor import router as handler_handler_items_editor
 from .showcase import router as showcase_router
 from .brand import router as brand_router
 from .crate_xml import router as xml_router
+from .crate_json import router as json_router
 
 router = APIRouter()
 router.include_router(auth_router)
@@ -40,3 +41,4 @@ router.include_router(handler_handler_items_editor)
 router.include_router(showcase_router)
 router.include_router(brand_router)
 router.include_router(xml_router)
+router.include_router(json_router)
