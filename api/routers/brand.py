@@ -38,6 +38,10 @@ def create_image(brand_id: int, file: UploadFile, crud_brand: crud.Brand = Depen
 def show(brand_id: int, crud_brand: crud.Brand = Depends()):
     return crud_brand.get(brand_id)
 
+@router.get('/url/{url}', status_code=200, response_model=schemas.Brand)
+def get_by_url(url: str, crud_brand: crud.Brand = Depends()):
+    return crud_brand.get_by_url(url)
+
 
 @router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Brand, dependencies=[Depends(allow_create_resource)])
 def update(request: schemas.UpdateBrand, crud_brand: crud.Brand = Depends()):

@@ -1,14 +1,22 @@
 import ftplib
 import json
+
 from fastapi.encoders import jsonable_encoder
 from .. import tables
 from ..schemas import brand as schemas
 from ..settings import settings
-from .base import CRUDBase
+from .base import CRUDBase, HTTPException, status
 
 
 class Brand(CRUDBase[tables.Brand, schemas.CreateBrand, schemas.BaseBrand]):
     table = tables.Brand
+
+    def get_by_url(self, url: str) -> table:
+        brand = self.db.query(tables.Brand).filter(tables.Brand.url == url).first()
+        if not brand:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f'User with the url \'{url}\' is not available')
+        return brand
 
     def delete(self, del_brand_id: int):
         brand = self._get(del_brand_id)
