@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     server_port: int = 7000
     ssl_keyfile: str = ''
     ssl_certfile: str = ''
+    ssl_ca_certs: str = ''
     database_url: str = 'sqlite:///./db.sqlite3'
 
     jwt_secret: str
