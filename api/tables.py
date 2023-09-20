@@ -146,7 +146,6 @@ class ShowcaseImage(Base):
 
 class Brand(Base):
     __tablename__ = "brand"
-
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     title = Column(String)

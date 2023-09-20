@@ -19,6 +19,11 @@ def get_all(skip: int = None, limit: int = None, search: str = None, crud_showca
     return crud_showcase.get_all(skip, limit, search)
 
 
+@router.get('/light', response_model=list[schemas.LightShowcase])
+def get_all_light(skip: int = None, limit: int = None, search: str = None, crud_showcase: crud.Showcase = Depends()):
+    return crud_showcase.get_all(skip, limit, search)
+
+
 @router.get('/dir', response_model=list[schemas.ShowcaseDirs])
 def get_dir_url(crud_showcase: crud.Showcase = Depends()):
     return crud_showcase.get_dir()
