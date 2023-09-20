@@ -1,6 +1,5 @@
 import ftplib
 import json
-from fastapi.encoders import jsonable_encoder
 from ..settings import settings
 
 from fastapi import Depends
@@ -27,7 +26,7 @@ class CreateJson:
             brand = brand_schemas.Brand(**brand_db.__dict__)
             brands.append(dict(brand))
 
-        showcase_db = self.db.query(tables.Showcase).filter(tables.Showcase.prom_active).all()
+        showcase_db = self.db.query(tables.Showcase).all()
         products: list[Product] = []
         for index, showcase_item_db in enumerate(showcase_db):
             showcase_item = showcase_schemas.Showcase(**showcase_item_db.__dict__)
