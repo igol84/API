@@ -29,6 +29,11 @@ def get_products_by_brand_id(brand_id: int, crud_showcase: crud.Showcase = Depen
     return crud_showcase.get_products_by_brand_id(brand_id)
 
 
+@router.get('/product-by-url/{product_url}')
+def get_product_by_url(product_url: str, crud_showcase: crud.Showcase = Depends()):
+    return crud_showcase.get_product_by_url(product_url)
+
+
 @router.get('/dir', response_model=list[schemas.ShowcaseDirs])
 def get_dir_url(crud_showcase: crud.Showcase = Depends()):
     return crud_showcase.get_dir()

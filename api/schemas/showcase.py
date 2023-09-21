@@ -72,7 +72,7 @@ class Size(BaseModel):
 
 
 class Product(BaseModel):
-    id: int
+    id: str
     type: str
     product_key: str
     name: str

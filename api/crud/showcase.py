@@ -1,6 +1,5 @@
 import ftplib
-from fastapi import UploadFile
-
+from fastapi import UploadFile, HTTPException, status
 from .. import tables
 from ..schemas import brand as brand_schemas, showcase as showcase_schemas, product as product_schemas
 from .base import CRUDBase
@@ -115,8 +114,60 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
 
             if (product_type == 'shoes' and sizes) or product_type != 'shoes':
                 products.append(showcase_schemas.Product(
-                    id=index + 100, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
+                    id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
                     price=price, images=images, brand=brand, sizes=sizes, desc=desc, desc_ua=desc_ua,
                     youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key
                 ))
-        return products
+            return products
+
+    def get_product_by_url(self, product_url: str) -> showcase_schemas.Product:
+        showcase_item_db = self.db.query(tables.Showcase).filter(tables.Showcase.url == product_url).first()
+        showcase_item = showcase_schemas.Showcase(**showcase_item_db.__dict__)
+        key = showcase_item.key
+        products_db = self.db.query(tables.Product).filter(tables.Product.name == showcase_item.name).all()
+        sizes: list[showcase_schemas.Size] = []
+        product_type = ''
+        product_url = showcase_item.url
+        desc = showcase_item.desc
+        desc_ua = showcase_item.desc_ua
+        price = 0
+        qty = None
+        for product_db in products_db:
+            product = product_schemas.Product(**product_db.__dict__)
+            product.shoes = product_schemas.Shoes(**product_db.shoes.__dict__) if product_db.shoes else None
+            product_type = product.type
+            price = product.price
+
+            if product.shoes and product.shoes.color == showcase_item.color:
+                items_db = self.db.query(tables.Item).filter(tables.Item.prod_id == product.id).all()
+                size_qty = sum([item_db.qty for item_db in items_db])
+                if size_qty:
+                    size = showcase_schemas.Size(size=product.shoes.size, length=product.shoes.length,
+                                                 price=product.price, qty=size_qty)
+                    sizes.append(size)
+            elif not product.shoes:
+                items_db = self.db.query(tables.Item).filter(tables.Item.prod_id == product.id).all()
+                qty = sum([item_db.qty for item_db in items_db])
+        sizes.sort(key=lambda size: size.size)
+        name = f'{showcase_item.title}.'
+        name_ua = f'{showcase_item.title_ua}.'
+        images_db = self.db.query(tables.ShowcaseImage).filter(tables.ShowcaseImage.dir == showcase_item.key).all()
+        images: list[str] = []
+        for image_db in images_db:
+            img_name = image_db.image.split('.')[0]
+            if img_name not in MISSING_IMAGES:
+                images.append(f'{IMG_URL_PREFIX}/{showcase_item.key}/{image_db.image}')
+
+        brand = None
+        if showcase_item.brand_id:
+            brand = self.db.query(tables.Brand).filter(tables.Brand.id == showcase_item.brand_id).first().name
+
+        if (product_type == 'shoes' and sizes) or product_type != 'shoes':
+            return showcase_schemas.Product(
+                id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
+                price=price, images=images, brand=brand, sizes=sizes, desc=desc, desc_ua=desc_ua,
+                youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key
+            )
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f'Product with the url \'{product_url}\' is not available')
