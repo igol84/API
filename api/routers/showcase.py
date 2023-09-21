@@ -24,6 +24,11 @@ def get_all_light(skip: int = None, limit: int = None, search: str = None, crud_
     return crud_showcase.get_all(skip, limit, search)
 
 
+@router.get('/products-by-brand-id/{brand_id}')
+def get_products_by_brand_id(brand_id: int, crud_showcase: crud.Showcase = Depends()):
+    return crud_showcase.get_products_by_brand_id(brand_id)
+
+
 @router.get('/dir', response_model=list[schemas.ShowcaseDirs])
 def get_dir_url(crud_showcase: crud.Showcase = Depends()):
     return crud_showcase.get_dir()
