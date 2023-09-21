@@ -6,7 +6,7 @@ from .base import CRUDBase
 from ..settings import settings
 from ..utilites import directory_exists, save_files, del_dir, check_file_name_and_get_new_name
 
-IMAGES = ['03', '13', '23', '33']
+MISSING_IMAGES = ['01', '02', '11', '12', '21', '22', '31', '32']
 IMG_URL_PREFIX = 'https://mirobuvi.com.ua/ftp_products'
 
 
@@ -105,7 +105,7 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
             images: list[str] = []
             for image_db in images_db:
                 img_name = image_db.image.split('.')[0]
-                if img_name in IMAGES:
+                if img_name not in MISSING_IMAGES:
                     images.append(f'{IMG_URL_PREFIX}/{showcase_item.key}/{image_db.image}')
 
             brand = None
@@ -155,7 +155,7 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
         images: list[str] = []
         for image_db in images_db:
             img_name = image_db.image.split('.')[0]
-            if img_name in IMAGES:
+            if img_name not in MISSING_IMAGES:
                 images.append(f'{IMG_URL_PREFIX}/{showcase_item.key}/{image_db.image}')
 
         brand = None
