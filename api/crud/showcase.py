@@ -1,7 +1,7 @@
 import ftplib
 from fastapi import UploadFile, HTTPException, status
 from .. import tables
-from ..schemas import brand as brand_schemas, showcase as showcase_schemas, product as product_schemas
+from ..schemas import showcase as showcase_schemas, product as product_schemas
 from .base import CRUDBase
 from ..settings import settings
 from ..utilites import directory_exists, save_files, del_dir, check_file_name_and_get_new_name
@@ -118,7 +118,7 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
                     price=price, images=images, brand=brand, sizes=sizes, desc=desc, desc_ua=desc_ua,
                     youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key
                 ))
-            return products
+        return products
 
     def get_product_by_url(self, product_url: str) -> showcase_schemas.Product:
         showcase_item_db = self.db.query(tables.Showcase).filter(tables.Showcase.url == product_url).first()
