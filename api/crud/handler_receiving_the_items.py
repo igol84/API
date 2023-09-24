@@ -22,7 +22,7 @@ class HeaderReceivingTheItems:
         new_items = []
         if data.type.name == 'product':
             if data.id:
-                # create new item
+                # Product exist. Create new item
                 pd_item = CreateItem(prod_id=data.id, store_id=data.store_id, qty=data.qty,
                                      buy_price=data.price_buy, date_buy=datetime.date.today())
                 new_item = tables.Item(**pd_item.dict())
@@ -61,13 +61,12 @@ class HeaderReceivingTheItems:
                 tables.Product.name.ilike(data.name),
                 tables.Shoes.color.ilike(data.module.color),
                 tables.Shoes.width == data.module.width).all()
-            db_sizes = {(shoes.size, shoes.length): {'id': product.id} for pc, product, shoes in products}
+            db_sizes = {shoes.size: {'id': product.id} for pc, product, shoes in products}
 
             for pd_size in data.module.sizes:
-                key = (pd_size.size, pd_size.length)
+                key = pd_size.size
                 if key in db_sizes:
                     # create new item for product.shoes id:', result.prod_id
-
                     pd_item = CreateItem(prod_id=db_sizes[key]['id'], store_id=data.store_id, qty=pd_size.qty,
                                          buy_price=data.price_buy, date_buy=datetime.date.today())
                     new_item = tables.Item(**pd_item.dict())
