@@ -61,17 +61,23 @@ class HeaderReceivingTheItems:
                 tables.Product.name.ilike(data.name),
                 tables.Shoes.color.ilike(data.module.color),
                 tables.Shoes.width == data.module.width).all()
-            db_sizes = {shoes.size: {'id': product.id} for pc, product, shoes in products}
 
+            db_sizes = {shoes.size: {'id': product.id} for pc, product, shoes in products}
+            print(db_sizes)
             for pd_size in data.module.sizes:
                 key = pd_size.size
                 if key in db_sizes:
+
                     # create new item for product.shoes id:', result.prod_id
                     pd_item = CreateItem(prod_id=db_sizes[key]['id'], store_id=data.store_id, qty=pd_size.qty,
                                          buy_price=data.price_buy, date_buy=datetime.date.today())
                     new_item = tables.Item(**pd_item.dict())
+                    print(new_item)
                     self.db.add(new_item)
                     self.db.commit()
+                    self.db.refresh(new_item)
+                    print(Item(**row2dict(new_item)))
+
                     new_items.append(new_item)
                 else:
                     pd_product = CreateProduct(type=data.type.name, name=data.name, price=data.price_sell)

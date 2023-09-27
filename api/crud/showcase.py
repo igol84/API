@@ -122,6 +122,9 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
 
     def get_product_by_url(self, product_url: str) -> showcase_schemas.Product:
         showcase_item_db = self.db.query(tables.Showcase).filter(tables.Showcase.url == product_url).first()
+        if not showcase_item_db:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f'Product with the url \'{product_url}\' is not available')
         showcase_item = showcase_schemas.Showcase(**showcase_item_db.__dict__)
         key = showcase_item.key
         products_db = self.db.query(tables.Product).filter(tables.Product.name == showcase_item.name).all()
