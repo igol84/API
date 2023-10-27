@@ -162,13 +162,15 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
                 images.append(f'{IMG_URL_PREFIX}/{showcase_item.key}/{image_db.image}')
 
         brand = None
+        brand_url = None
         if showcase_item.brand_id:
             brand = self.db.query(tables.Brand).filter(tables.Brand.id == showcase_item.brand_id).first().name
+            brand_url = self.db.query(tables.Brand).filter(tables.Brand.id == showcase_item.brand_id).first().url
 
         if (product_type == 'shoes' and sizes) or product_type != 'shoes':
             return showcase_schemas.Product(
                 id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
-                price=price, images=images, brand=brand, sizes=sizes, desc=desc, desc_ua=desc_ua,
+                price=price, images=images, brand=brand, brand_url=brand_url, sizes=sizes, desc=desc, desc_ua=desc_ua,
                 youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key
             )
         else:

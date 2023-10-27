@@ -83,6 +83,7 @@ class Product(BaseModel):
     price: float
     images: list[str]
     brand: Optional[str]
+    brand_url: Optional[str]
     sizes: list[Size]
     desc: str
     desc_ua: str
