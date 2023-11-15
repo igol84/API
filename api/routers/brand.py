@@ -19,6 +19,11 @@ def get_all(skip: int = None, limit: int = None, store_id: int = None, crud_bran
     return crud_brand.get_all(skip, limit, store_id)
 
 
+@router.get('/images', response_model=list[str])
+def get_images(crud_brand: crud.Brand = Depends()):
+    return crud_brand.get_images()
+
+
 @router.get('/{brand_id}', status_code=200, response_model=schemas.Brand)
 def show(brand_id: int, crud_brand: crud.Brand = Depends()):
     return crud_brand.get(brand_id)
@@ -32,11 +37,6 @@ def get_by_url(url: str, crud_brand: crud.Brand = Depends()):
 @router.get('/save-json', response_model=list[schemas.Brand])
 def save_json(crud_brand: crud.Brand = Depends()):
     return crud_brand.save_json()
-
-
-@router.get('/images', response_model=list[str])
-def get_images(crud_brand: crud.Brand = Depends()):
-    return crud_brand.get_images()
 
 
 @router.post("/image/{brand_id}", status_code=status.HTTP_201_CREATED, dependencies=[Depends(allow_create_resource)])
