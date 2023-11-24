@@ -1,4 +1,6 @@
 import ftplib
+from datetime import date
+
 from fastapi import UploadFile, HTTPException, status
 from .. import tables
 from ..schemas import showcase as showcase_schemas, product as product_schemas
@@ -20,6 +22,12 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
         db_obj.update(request.dict(exclude={'images'}))
         self.db.commit()
         return db_obj.first()
+
+    def updateDate(self) -> tables.Showcase:
+        self.db.query(tables.Showcase).update({tables.Showcase.date: date.today()})
+        self.db.commit()
+
+
 
     def del_dir_showcase(self, directory: str):
         ftp = ftplib.FTP(settings.ftp_host, settings.ftp_products_user, settings.ftp_products_pass)

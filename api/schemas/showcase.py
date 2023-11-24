@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional
 
 from pydantic import BaseModel
@@ -33,6 +34,7 @@ class BaseShowcase(BaseModel):
     youtube: Optional[str]
     active: bool
     prom_active: bool
+    date: date
 
 
 class CreateShowcase(BaseShowcase):
