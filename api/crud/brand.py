@@ -38,7 +38,6 @@ class Brand(CRUDBase[tables.Brand, schemas.CreateBrand, schemas.BaseBrand]):
             ftp.quit()
         return brands
 
-
     @staticmethod
     def get_images() -> list[str]:
         ftp = ftplib.FTP(settings.ftp_host, settings.ftp_brands_user, settings.ftp_brands_pass)

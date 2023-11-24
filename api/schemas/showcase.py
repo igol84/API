@@ -90,3 +90,4 @@ class Product(BaseModel):
     desc: str
     desc_ua: str
     youtube: Optional[str]
+    date: date

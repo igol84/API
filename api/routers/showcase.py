@@ -47,7 +47,6 @@ def show(name: str, crud_showcase: crud.Showcase = Depends()):
 @router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Showcase,
             dependencies=[Depends(allow_create_resource)])
 def update(request: schemas.UpdateShowcase, crud_showcase: crud.Showcase = Depends()):
-    print(request)
     return crud_showcase.update(request)
 
 

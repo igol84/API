@@ -1,5 +1,4 @@
 import ftplib
-from datetime import date
 
 from fastapi import UploadFile, HTTPException, status
 from .. import tables
@@ -118,7 +117,7 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
                 products.append(showcase_schemas.Product(
                     id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
                     price=price, images=images, brand=brand, sizes=sizes, desc=desc, desc_ua=desc_ua,
-                    youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key
+                    youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key, date=showcase_item.date
                 ))
         return products
 
@@ -173,7 +172,7 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
             return showcase_schemas.Product(
                 id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
                 price=price, images=images, brand=brand, brand_url=brand_url, sizes=sizes, desc=desc, desc_ua=desc_ua,
-                youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key
+                youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key, date=showcase_item.date
             )
         else:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
