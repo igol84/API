@@ -1,6 +1,6 @@
 from datetime import datetime, date
 
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Date, Boolean
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Date, Boolean, func
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -135,12 +135,13 @@ class Showcase(Base):
     active = Column(Boolean)
     prom_active = Column(Boolean)
     images = relationship('ShowcaseImage', back_populates='showcase', cascade='all, delete')
+    date =  Column(DateTime(timezone=True), server_default=func.now())
 
 
 class ShowcaseImage(Base):
     __tablename__ = "showcase_image"
     dir = Column(String, ForeignKey('showcase.key'), primary_key=True, index=True)
-    image = Column(String, primary_key=True, index=True )
+    image = Column(String, primary_key=True, index=True)
     showcase = relationship('Showcase', back_populates='images')
 
 

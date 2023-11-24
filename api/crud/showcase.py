@@ -98,7 +98,7 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
                 elif not product.shoes:
                     items_db = self.db.query(tables.Item).filter(tables.Item.prod_id == product.id).all()
                     qty = sum([item_db.qty for item_db in items_db])
-            sizes.sort(key=lambda size: size.size)
+            sizes.sort(key=lambda item_size: size.size)
             name = f'{showcase_item.title}.'
             name_ua = f'{showcase_item.title_ua}.'
             images_db = self.db.query(tables.ShowcaseImage).filter(tables.ShowcaseImage.dir == showcase_item.key).all()
@@ -151,7 +151,7 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
             elif not product.shoes:
                 items_db = self.db.query(tables.Item).filter(tables.Item.prod_id == product.id).all()
                 qty = sum([item_db.qty for item_db in items_db])
-        sizes.sort(key=lambda size: size.size)
+        sizes.sort(key=lambda item_size: size.size)
         name = f'{showcase_item.title}.'
         name_ua = f'{showcase_item.title_ua}.'
         images_db = self.db.query(tables.ShowcaseImage).filter(tables.ShowcaseImage.dir == showcase_item.key).all()
