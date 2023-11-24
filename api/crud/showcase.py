@@ -23,12 +23,6 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
         self.db.commit()
         return db_obj.first()
 
-    def updateDate(self) -> tables.Showcase:
-        self.db.query(tables.Showcase).update({tables.Showcase.date: date.today()})
-        self.db.commit()
-
-
-
     def del_dir_showcase(self, directory: str):
         ftp = ftplib.FTP(settings.ftp_host, settings.ftp_products_user, settings.ftp_products_pass)
         del_dir(directory, ftp)
