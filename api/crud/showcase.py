@@ -103,7 +103,7 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
         desc = showcase_item.desc
         desc_ua = showcase_item.desc_ua
         price = 0
-        qty = None
+        qty = 0
         for product_db in products_db:
             product = product_schemas.Product(**product_db.__dict__)
             product.shoes = product_schemas.Shoes(**product_db.shoes.__dict__) if product_db.shoes else None
