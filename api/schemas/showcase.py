@@ -73,21 +73,23 @@ class Size(BaseModel):
     qty: int
 
 
-class Product(BaseModel):
+class ProductWithoutDesc(BaseModel):
     id: str
     type: str
     product_key: str
     name: str
     name_ua: str
     url: str
-    qty: Optional[int]
+    qty: int
     brand_id: int
     price: float
     images: list[str]
     brand: Optional[str]
     brand_url: Optional[str]
     sizes: list[Size]
+    date: date
+
+class Product(ProductWithoutDesc):
     desc: str
     desc_ua: str
     youtube: Optional[str]
-    date: date
