@@ -1,5 +1,4 @@
 import ftplib
-from typing import Union
 
 from fastapi import UploadFile, HTTPException, status
 from .. import tables
@@ -75,7 +74,7 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
         products: list[showcase_schemas.Product] = []
         for showcase_item_db in showcase_db:
             showcase_item = showcase_schemas.Showcase(**showcase_item_db.__dict__)
-            products.append(self.convert_showcase_to_product(showcase_item, withoutDesc=True))
+            products.append(self.convert_showcase_to_product(showcase_item))
         return products
 
     def get_products_by_brand_id(self, brand_id: int) -> list[showcase_schemas.Product]:
@@ -96,15 +95,12 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
         return product
 
     def convert_showcase_to_product(
-            self, showcase_item: showcase_schemas.Showcase, withoutDesc: bool = False
-    ) -> Union[showcase_schemas.Product, showcase_schemas.ProductWithoutDesc]:
+            self, showcase_item: showcase_schemas.Showcase) -> showcase_schemas.ProductWithoutDesc:
         key = showcase_item.key
         products_db = self.db.query(tables.Product).filter(tables.Product.name == showcase_item.name).all()
         sizes: list[showcase_schemas.Size] = []
         product_type = ''
         product_url = showcase_item.url
-        desc = showcase_item.desc
-        desc_ua = showcase_item.desc_ua
         price = 0
         qty = 0
         for product_db in products_db:
@@ -139,15 +135,8 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
         if showcase_item.brand_id:
             brand = self.db.query(tables.Brand).filter(tables.Brand.id == showcase_item.brand_id).first().name
             brand_url = self.db.query(tables.Brand).filter(tables.Brand.id == showcase_item.brand_id).first().url
-        if withoutDesc:
-            return showcase_schemas.ProductWithoutDesc(
-                id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
-                price=price, images=images, brand=brand, brand_url=brand_url, sizes=sizes, qty=qty, url=product_url,
-                product_key=key, date=showcase_item.date
-            )
-        else:
-            return showcase_schemas.Product(
-                id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
-                price=price, images=images, brand=brand, brand_url=brand_url, sizes=sizes, desc=desc, desc_ua=desc_ua,
-                youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key, date=showcase_item.date
-            )
+        return showcase_schemas.ProductWithoutDesc(
+            id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
+            price=price, images=images, brand=brand, brand_url=brand_url, sizes=sizes, qty=qty, url=product_url,
+            product_key=key, date=showcase_item.date
+        )
