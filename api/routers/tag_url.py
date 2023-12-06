@@ -5,10 +5,11 @@ from ..schemas import tag_url as schemas
 from ..auth2 import RoleChecker
 
 allow_create_resource = RoleChecker(["admin"])
-router = APIRouter(tags=['TagUrl'], prefix='/tag_url', dependencies=[Depends(allow_create_resource)])
+router = APIRouter(tags=['TagUrl'], prefix='/tag_url')
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.TagUrl)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.TagUrl,
+             dependencies=[Depends(allow_create_resource)])
 def create(request: schemas.CreateTagUrl, crud_tag_url: crud.TagUrl = Depends()):
     return crud_tag_url.create(request)
 
@@ -23,12 +24,13 @@ def show(tag_url: str, crud_tag_url: crud.TagUrl = Depends()):
     return crud_tag_url.get(tag_url)
 
 
-@router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.TagUrl)
+@router.put('/', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.TagUrl,
+            dependencies=[Depends(allow_create_resource)])
 def update(request: schemas.UpdateTagUrl, crud_tag_url: crud.TagUrl = Depends()):
     return crud_tag_url.update(request)
 
 
-@router.delete('/{tag_url_id}')
+@router.delete('/{tag_url_id}', dependencies=[Depends(allow_create_resource)])
 def delete(tag_url: str, crud_tag_url: crud.TagUrl = Depends()):
     crud_tag_url.delete(tag_url)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
