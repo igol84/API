@@ -155,3 +155,12 @@ class Brand(Base):
     desc_ua = Column(String)
     url = Column(String)
     active = Column(Boolean)
+
+
+class TagUrl(Base):
+    __tablename__ = "tag_url"
+    url = Column(String, primary_key=True, index=True)
+    search = Column(String)
+    search_ua = Column(String)
+    desc = Column(String)
+    desc_ua = Column(String)
