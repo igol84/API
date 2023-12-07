@@ -7,6 +7,8 @@ class BaseTagUrl(BaseModel):
     search_ua: str
     desc: str
     desc_ua: str
+    text: str
+    text_ua: str
 
 
 class CreateTagUrl(BaseTagUrl):

@@ -164,3 +164,5 @@ class TagUrl(Base):
     search_ua = Column(String)
     desc = Column(String)
     desc_ua = Column(String)
+    text = Column(String)
+    text_ua = Column(String)
