@@ -30,7 +30,7 @@ def update(request: schemas.UpdateTagUrl, crud_tag_url: crud.TagUrl = Depends())
     return crud_tag_url.update(request)
 
 
-@router.delete('/{tag_url_id}', dependencies=[Depends(allow_create_resource)])
+@router.delete('/{tag_url}', dependencies=[Depends(allow_create_resource)])
 def delete(tag_url: str, crud_tag_url: crud.TagUrl = Depends()):
     crud_tag_url.delete(tag_url)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
