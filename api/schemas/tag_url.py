@@ -3,6 +3,8 @@ from pydantic import BaseModel
 
 class BaseTagUrl(BaseModel):
     url: str
+    parent: str
+    order_number: int
     search: str
     search_ua: str
     desc: str

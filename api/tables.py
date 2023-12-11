@@ -160,6 +160,8 @@ class Brand(Base):
 class TagUrl(Base):
     __tablename__ = "tag_url"
     url = Column(String, primary_key=True, index=True)
+    parent = Column(String, server_default="")
+    order_number = Column(Integer, server_default="0")
     search = Column(String)
     search_ua = Column(String)
     desc = Column(String)
