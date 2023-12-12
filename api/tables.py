@@ -136,6 +136,7 @@ class Showcase(Base):
     prom_active = Column(Boolean)
     images = relationship('ShowcaseImage', back_populates='showcase', cascade='all, delete')
     date = Column(Date, default=date.today())
+    tags = Column(String, server_default="")
 
 
 class ShowcaseImage(Base):

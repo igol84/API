@@ -35,6 +35,7 @@ class BaseShowcase(BaseModel):
     active: bool
     prom_active: bool
     date: date
+    tags: str
 
 
 class CreateShowcase(BaseShowcase):
@@ -88,6 +89,7 @@ class ProductWithoutDesc(BaseModel):
     brand_url: Optional[str]
     sizes: list[Size]
     date: date
+
 
 class Product(ProductWithoutDesc):
     desc: str
