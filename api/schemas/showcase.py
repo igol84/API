@@ -89,6 +89,7 @@ class ProductWithoutDesc(BaseModel):
     brand_url: Optional[str]
     sizes: list[Size]
     date: date
+    tags: str
 
 
 class Product(ProductWithoutDesc):

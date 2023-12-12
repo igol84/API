@@ -143,11 +143,12 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
             return showcase_schemas.ProductWithoutDesc(
                 id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
                 price=price, images=images, brand=brand, brand_url=brand_url, sizes=sizes, qty=qty, url=product_url,
-                product_key=key, date=showcase_item.date
+                product_key=key, date=showcase_item.date, tags=showcase_item.tags
             )
         else:
             return showcase_schemas.Product(
                 id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
                 price=price, images=images, brand=brand, brand_url=brand_url, sizes=sizes, desc=desc, desc_ua=desc_ua,
-                youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key, date=showcase_item.date
+                youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key, date=showcase_item.date,
+                tags=showcase_item
             )
