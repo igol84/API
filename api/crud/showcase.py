@@ -150,5 +150,5 @@ class Showcase(CRUDBase[tables.Showcase, showcase_schemas.CreateShowcase, showca
                 id=key, type=product_type, name=name, name_ua=name_ua, brand_id=showcase_item.brand_id,
                 price=price, images=images, brand=brand, brand_url=brand_url, sizes=sizes, desc=desc, desc_ua=desc_ua,
                 youtube=showcase_item.youtube, qty=qty, url=product_url, product_key=key, date=showcase_item.date,
-                tags=showcase_item
+                tags=showcase_item.tags
             )
