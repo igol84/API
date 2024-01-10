@@ -1,5 +1,4 @@
 from fastapi import HTTPException
-from sqlalchemy import func
 from starlette import status
 
 from .. import tables
@@ -55,11 +54,13 @@ class Place(CRUDBase[tables.Place, schemas.CreatePlace, schemas.BasePlace]):
         return place_row
 
     def get_all_deletable(self, store_id: int) -> list[schemas.PlaceWithDeletable]:
-        db_obj = self.db.query(self.table.id, self.table.store_id, self.table.name, self.table.active,
-                               func.count(tables.Sale.place_id).label("sales"),
-                               func.count(tables.Expense.place_id).label("expenses")) \
-            .where(self.table.store_id == store_id) \
-            .join(tables.Sale, self.table.id == tables.Sale.place_id, isouter=True) \
-            .join(tables.Expense, self.table.id == tables.Expense.place_id, isouter=True) \
-            .group_by(self.table.id)
-        return db_obj.all()
+        places_rows = self.db.query(self.table).filter(self.table.store_id == store_id).order_by(self.table.id)
+        places: list[schemas.PlaceWithDeletable] = []
+        for place_row in places_rows:
+            sales = self.db.query(tables.Sale).filter(tables.Sale.place_id == place_row.id).all()
+            expenses = self.db.query(tables.Expense).filter(tables.Expense.place_id == place_row.id).all()
+            place = schemas.PlaceWithDeletable(
+                id=place_row.id, store_id=place_row.store_id, name=place_row.name, active=place_row.active,
+                sales=len(sales), expenses=len(expenses))
+            places.append(place)
+        return places
